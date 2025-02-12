@@ -1,4 +1,4 @@
-# RR TalkTalk RadioPlayer
+# Radyong Sira! Radio Player
 A simple player that works with the azuracast api
 
 # Config
