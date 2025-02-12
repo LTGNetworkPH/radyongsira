@@ -69,7 +69,7 @@ if (audioPlayer && audioPlayer.dataset.src) {
         e.paused ? setPlayStatus() : setPauseStatus()
     }), !1)
 }
-const boxplay = "https://talktalk.florencejaymunar.com/api/nowplaying_static/main.json";
+const boxplay = "https://radio.ltg.network/api/nowplaying_static/main.json";
 
 function playerInit() {
     fetch(boxplay).then((e => e.json())).then((e => {
