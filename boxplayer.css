@@ -346,6 +346,10 @@ a {
     --svg-size: 2rem
 }
 
+i.fa-brands.fa-discord {
+    padding-right: 4px;
+}
+
 .btn {
     display: flex;
     align-items: center;
