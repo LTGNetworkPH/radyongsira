@@ -116,11 +116,11 @@ function playerInit() {
         })), setTimeout(playerInit, 1e3 * 2)
 
         if (e.live.is_live == true) {
-            document.getElementById("radio-status").innerHTML = "LIVE:" + " " + e.live.streamer_name;
+            document.getElementById("radio-status-text").innerHTML = "LIVE:" + " " + e.live.streamer_name;
             document.getElementById("live-broadcaster").src = e.live.art;
             
         } else {
-        document.getElementById("radio-status").innerHTML = "all djs are offline at the moment, on autodj mode";
+        document.getElementById("radio-status-text").innerHTML = "all djs are offline at the moment, on autodj mode";
         n && setPlayerMeta(n, e.playing_next.song);
         }
 
