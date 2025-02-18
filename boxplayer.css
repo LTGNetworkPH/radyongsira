@@ -760,7 +760,7 @@ i.fa-brands.fa-discord {
 }
 
 #radio-status {
-    float: left;
+    display: block;
     margin-top: 0.8rem;
     animation: livebanner 18s linear infinite;
 
