@@ -762,6 +762,7 @@ i.fa-brands.fa-discord {
 #radio-status {
     float: left;
     margin-top: 0.8rem;
+    animation: livebanner 18s linear infinite;
 
     @media (max-width:991px) {
     font-size: 1rem;
@@ -771,6 +772,18 @@ i.fa-brands.fa-discord {
     font-size: 0.8rem;    
     }
 }
+
+@keyframes livebanner {
+    0% {
+      margin-left: 100%;
+      transform: translateX(0%);
+    }
+    100% {
+      margin-left: 0;
+      transform: translateX(-100%);
+    }
+  }
+  
 
 #wip {
     font-size: 10rem;
