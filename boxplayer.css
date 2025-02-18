@@ -736,6 +736,7 @@ i.fa-brands.fa-discord {
 #radio-status {
     float: left;
     margin-top: 0.8rem;
+    animation: textMarquee 14s infinite linear
 }
 
 #wip {

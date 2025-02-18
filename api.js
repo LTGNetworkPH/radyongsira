@@ -32,14 +32,14 @@ function setScrollText() {
     }))
 }
 
-function setScrollTextForLive() {
-    document.querySelectorAll(".radio-status").forEach((e => {
-        var sn = $(".live-streamer_name", e),
-            an = sn.offsetWidth,
-            on = e.offsetWidth;
-        e.setAttribute("style", "--title-width:" + on + "px"), an > on ? sn.classList.add("song-very-long") : sn.classList.remove("song-very-long")
-    }))
-}
+// function setScrollTextForLive() {
+//     document.querySelectorAll(".radio-status").forEach((e => {
+//         var sn = $(".live-streamer_name", e),
+//             an = sn.offsetWidth,
+//             on = e.offsetWidth;
+//         e.setAttribute("style", "--title-width:" + on + "px"), an > on ? sn.classList.add("song-very-long") : sn.classList.remove("song-very-long")
+//     }))
+// }
 
 function setVolumeIcon(e) {
     e < 10 ? controlVolume.innerHTML = '<i class="fa-solid fa-volume-off"></i>' : e < 60 && e > 10 ? controlVolume.innerHTML = '<i class="fa-solid fa-volume-low"></i>' : e > 60 && (controlVolume.innerHTML = '<i class="fa-solid fa-volume-high"></i>')
