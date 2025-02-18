@@ -92,7 +92,7 @@ function playerInit() {
             liv = $(".live-streamer_name", player);
             art = $(".live-art", player);
 
-        s && s.src && (s.crossOrigin = "Anonymous", s.src = "https://images.weserv.nl/?url=" + encodeURIComponent(e.now_playing.song.art), setAccentColor(document.body, s)), o && setPlayerMeta(o, e.now_playing.song), a && (a.innerHTML = createHistory(t, a.dataset.results || 5)), setScrollText(), "mediaSession" in navigator && (navigator.mediaSession.metadata = new MediaMetadata({
+        s && s.src && (s.crossOrigin = "Anonymous", s.src = "https://wsrv.nl/?url=" + encodeURIComponent(e.now_playing.song.art), setAccentColor(document.body, s)), o && setPlayerMeta(o, e.now_playing.song), a && (a.innerHTML = createHistory(t, a.dataset.results || 5)), setScrollText(), "mediaSession" in navigator && (navigator.mediaSession.metadata = new MediaMetadata({
             title: e.now_playing.song.title,
             artist: e.now_playing.song.artist,
             album: e.now_playing.song.album,
