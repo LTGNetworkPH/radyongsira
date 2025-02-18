@@ -762,7 +762,14 @@ i.fa-brands.fa-discord {
 #radio-status {
     float: left;
     margin-top: 0.8rem;
-    animation: liveMarquee 14s infinite linear
+
+    @media (max-width:991px) {
+    font-size: 1rem;
+    }
+
+    @media (max-width:575px) {
+    font-size: 0.8rem;    
+    }
 }
 
 #wip {
