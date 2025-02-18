@@ -759,14 +759,14 @@ i.fa-brands.fa-discord {
     margin-top: 15px;
 }
 
-#radio-status {
+.radio-status {
     display: flex;
     overflow: hidden;
     white-space: nowrap;
     margin-top: 0.8rem;
     
 }
-#radio-status p {
+#radio-status-text {
     animation: livebanner 8s linear infinite;
 
     @media (max-width:991px) {
