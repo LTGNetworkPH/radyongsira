@@ -763,7 +763,7 @@ i.fa-brands.fa-discord {
     display: inline;
     white-space: nowrap;
     margin-top: 0.8rem;
-    animation: livebanner 18s linear infinite;
+    animation: livebanner 8s linear infinite;
 
     @media (max-width:991px) {
     font-size: 1rem;
