@@ -671,6 +671,19 @@ i.fa-brands.fa-discord {
     }
 }
 
+@keyframes liveMarquee {
+
+    25%,
+    from {
+        transform: translateX(0)
+    }
+
+    50%,
+    75% {
+        transform: translateX(calc(-100% + var(--title-width)))
+    }
+}
+
 .song-very-long {
     animation: textMarquee 14s infinite linear
 }
@@ -736,7 +749,7 @@ i.fa-brands.fa-discord {
 #radio-status {
     float: left;
     margin-top: 0.8rem;
-    animation: textMarquee 14s infinite linear
+    animation: liveMarquee 14s infinite linear
 }
 
 #wip {
