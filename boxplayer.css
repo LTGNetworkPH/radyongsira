@@ -675,9 +675,13 @@ i.fa-brands.fa-discord {
     0%
     {
         transform: translateX(0);
+        -moz-transform: translateX(0); /* Firefox bug fix */
+        -webkit-transform: translateX(0); /* Firefox bug fix */
     }
     100%
     {
+        -moz-transform: translateX(-100%); /* Firefox bug fix */
+        -webkit-transform: translateX(-100%); /* Firefox bug fix */
         transform: translateX(-100%);
     }
 }
