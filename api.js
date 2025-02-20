@@ -123,6 +123,7 @@ function playerInit() {
         } else {
         document.getElementById("radio-status-text").innerHTML = "all djs are offline at the moment, on autodj mode";
         n && setPlayerMeta(n, e.playing_next.song);
+        document.getElementById("live-broadcaster").src = "https://i.imgur.com/Dtanzpr.png";
         }
         
         document.getElementById("live-listeners").innerHTML = "Listeners:" + " " + e.listeners.total;
