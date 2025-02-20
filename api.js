@@ -91,6 +91,7 @@ function playerInit() {
             olv = $(".live-is_live", player);
             liv = $(".live-streamer_name", player);
             art = $(".live-art", player);
+            lis = $(".listeners-total", player);
 
         s && s.src && (s.crossOrigin = "Anonymous", s.src = "https://wsrv.nl/?url=" + encodeURIComponent(e.now_playing.song.art), setAccentColor(document.body, s)), o && setPlayerMeta(o, e.now_playing.song), a && (a.innerHTML = createHistory(t, a.dataset.results || 5)), setScrollText(), "mediaSession" in navigator && (navigator.mediaSession.metadata = new MediaMetadata({
             title: e.now_playing.song.title,
@@ -123,7 +124,8 @@ function playerInit() {
         document.getElementById("radio-status-text").innerHTML = "all djs are offline at the moment, on autodj mode";
         n && setPlayerMeta(n, e.playing_next.song);
         }
-
+        
+        document.getElementById("listeners").innerHTML = "Listeners:" + " " + e.listeners-total;
         
     })).catch((e => console.log(e)))
 }
