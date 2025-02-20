@@ -793,11 +793,12 @@ i.fa-brands.fa-discord {
 }
 
 #live-listeners {
+    text-align: center;
+    justify-content: center;
+    
     @media (max-width:991px) {
     font-size: 1rem;
     margin-top: 0;
-    text-align: center;
-    justify-content: center;
     }
 
     @media (max-width:575px) {
