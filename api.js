@@ -125,7 +125,7 @@ function playerInit() {
         n && setPlayerMeta(n, e.playing_next.song);
         }
         
-        document.getElementById("listeners").innerHTML = "Listeners:" + " " + e.listeners.total;
+        document.getElementById("live-listeners").innerHTML = "Listeners:" + " " + e.listeners.total;
         
     })).catch((e => console.log(e)))
 }
