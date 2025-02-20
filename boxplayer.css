@@ -792,7 +792,7 @@ i.fa-brands.fa-discord {
 
 }
 
-#listeners {
+#live-listeners {
     @media (max-width:991px) {
     font-size: 1rem;
     margin-top: 0;
