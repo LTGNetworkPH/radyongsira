@@ -1004,11 +1004,16 @@ i.fa-brands.fa-discord {
   .marquee span {
     float: left;
     width: 50%;
+    gap: var(--gap);
   }
   
   @keyframes marquee {
-    0% { left: 0; }
-    100% { left: -100%; }
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(calc(-100% - var(--gap)));
+    }
   }
 
   #textEmbed {
