@@ -12,6 +12,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta content="width=device-width,initial-scale=1" name="viewport" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <title>Radyong Sira!</title>
     
@@ -42,6 +43,11 @@
 
          -->
     </style>
+    <script>
+    $(document).ready(function() {
+        $("#nav-placeholder").load("navbar.html")
+    })
+    </script>
     <link href="boxplayer.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -49,7 +55,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Radyong Sira!" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     </head>
   <body class="color-text fs-6">
     <div class="player has-bg-cover mask color-title">
@@ -74,28 +79,8 @@
             /></a>
           </div>
         </div>
-        <div class="bg-black flex justify-center">
-          <span class="topnav" id="myTopnav">
-            <a href="./index.html">Home</a>
-            <a href="./charts.html">Charts</a>
-            <a href="https://radio.ltg.network/public/radyongsira/podcasts" target="_blank">Podcasts</a>
-            <a href="./schedule.html">Schedule</a>
-            <a href="https://www.internet-radio.com/">Internet Radio</a>
-            <a href="https://onlineradiobox.com/ph/radyongsira/"
-              >Online Radio Box</a
-            >
-            <a href="https://www.radio-browser.info/history/9c64fb2a-cf4e-459d-99e7-14fb757219f6">Radio-Browser.info</a>
-            <a href="https://radio.ltg.network/public/radyongsira/playlist.m3u"
-              >M3U</a
-            >
-            <a href="https://radio.ltg.network/public/radyongsira/playlist.pls"
-              >PLS</a
-            >
-            <a href="javascript:void(0);" class="icon" onclick="navBar()">
-              <i class="fa fa-bars"></i>
-            </a>
-          </span>
-        </div>
+        <!-- navbar -->
+        <div id="nav-placeholder"></div>
         <div class="bg-black flex justify-center">
           <span class="uppercase fs-6 fw-400 px-.5 py-.25">
             <img
@@ -170,7 +155,7 @@
         </div>
         <div
           class="player-audio bg-black p-2 flex justify-center g-2 items-center relative"
-          data-src="https://radio.ltg.network/public/radyongsira/playlist.pls"
+          data-src="https://radio.ltg.network/listen/radyongsira/radio.mp3"
         >
           <div
             class="flex flex-wrap justify-center text-center g-.75 | gt:flex gt:rounded-pill gt:p-1"
