@@ -793,7 +793,7 @@ i.fa-brands.fa-discord {
 
 }
 
-@keyframes scroll {
+@keyframes livebanner {
     0% {
         margin-left: 100%;
         transform: translateX(0%);
