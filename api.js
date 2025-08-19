@@ -1,142 +1,163 @@
-function $$(e) {
-    return document.getElementById(e)
+function $$(id) {
+    return document.getElementById(id);
 }
 
-function $(e, t) {
-    return (t || document).querySelector(e)
+function $(selector, context = document) {
+    return context.querySelector(selector);
 }
 
-function setAccentColor(e, t) {
-    let a = new ColorThief;
-    t.complete ? e.setAttribute("style", `--accent: rgb(${a.getColor(t)})`) : t.addEventListener("load", (function() {
-        e.setAttribute("style", `--accent: rgb(${a.getColor(t)})`)
-    }))
+function setAccentColor(element, img) {
+    const colorThief = new ColorThief();
+    const setColor = () => element.setAttribute("style", `--accent: rgb(${colorThief.getColor(img)})`);
+    img.complete ? setColor() : img.addEventListener("load", setColor);
 }
 
-function setPlayerMeta(e, t) {
-    let a = $(".song-cover", e),
-        o = $(".song-title", e),
-        n = $(".song-artist", e),
-        l = $(".song-album", e);
-        ol = $(".live-is_live", e);
-        li = $(".live-streamer_name", e);
-    a && (a.src = t.art), o && (o.innerText = t.title), n && (n.innerText = t.artist), l && (l.innerText = t.album), li && (li.innerText = t.streamer_name), ol && (ol.innerText = t.streamer_name)
+function setPlayerMeta(container, meta) {
+    const cover = $(".song-cover", container);
+    const title = $(".song-title", container);
+    const artist = $(".song-artist", container);
+    const album = $(".song-album", container);
+    const isLive = $(".live-is_live", container);
+    const streamerName = $(".live-streamer_name", container);
+
+    if (cover) cover.src = meta.art;
+    if (title) title.innerText = meta.title;
+    if (artist) artist.innerText = meta.artist;
+    if (album) album.innerText = meta.album;
+    if (streamerName) streamerName.innerText = meta.streamer_name;
+    if (isLive) isLive.innerText = meta.streamer_name;
 }
 
 function setScrollText() {
-    document.querySelectorAll(".player-meta").forEach((e => {
-        var t = $(".song-title", e),
-            a = t.offsetWidth,
-            o = e.offsetWidth;
-        e.setAttribute("style", "--title-width:" + o + "px"), a > o ? t.classList.add("song-very-long") : t.classList.remove("song-very-long")
-    }))
-}
-
-// function setScrollTextForLive() {
-//     document.querySelectorAll(".radio-status").forEach((e => {
-//         var sn = $(".live-streamer_name", e),
-//             an = sn.offsetWidth,
-//             on = e.offsetWidth;
-//         e.setAttribute("style", "--title-width:" + on + "px"), an > on ? sn.classList.add("song-very-long") : sn.classList.remove("song-very-long")
-//     }))
-// }
-
-function setVolumeIcon(e) {
-    e < 10 ? controlVolume.innerHTML = '<i class="fa-solid fa-volume-off"></i>' : e < 60 && e > 10 ? controlVolume.innerHTML = '<i class="fa-solid fa-volume-low"></i>' : e > 60 && (controlVolume.innerHTML = '<i class="fa-solid fa-volume-high"></i>')
-}
-const player = $(".player"),
-    audioPlayer = $(".player-audio"),
-    verticalVolume = $(".player-volume-toggle"),
-    controlVolume = $(".player-volume-toggle-btn");
-if (audioPlayer && audioPlayer.dataset.src) {
-    const e = new Audio(audioPlayer.dataset.src);
-    verticalVolume && controlVolume && (controlVolume.onclick = () => {
-        verticalVolume.classList.toggle("is-active")
+    document.querySelectorAll(".player-meta").forEach(e => {
+        const title = $(".song-title", e);
+        if (!title) return;
+        const titleWidth = title.offsetWidth;
+        const containerWidth = e.offsetWidth;
+        e.setAttribute("style", `--title-width:${containerWidth}px`);
+        title.classList.toggle("song-very-long", titleWidth > containerWidth);
     });
-    const t = $(".player-volume", audioPlayer);
-    t.addEventListener("change", (function(t) {
-        e.volume = t.currentTarget.value / 100, verticalVolume && controlVolume && setVolumeIcon(t.currentTarget.value), localStorage.setItem("player_vol", e.volume)
-    }), !1);
-    var getVolume = localStorage.getItem("player_vol");
-    getVolume && (e.volume = getVolume, t.value = 100 * getVolume), verticalVolume && controlVolume && setVolumeIcon(t.value);
-    var playBtn = $(".player-toggle", audioPlayer),
-        playIcon = $(".i-play", audioPlayer),
-        pauseIcon = $(".i-pause", audioPlayer);
+}
+
+function setVolumeIcon(volume) {
+    if (volume < 10) {
+        controlVolume.innerHTML = '<i class="fa-solid fa-volume-off"></i>';
+    } else if (volume < 60) {
+        controlVolume.innerHTML = '<i class="fa-solid fa-volume-low"></i>';
+    } else {
+        controlVolume.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+    }
+}
+
+const player = $(".player");
+const audioPlayer = $(".player-audio");
+const verticalVolume = $(".player-volume-toggle");
+const controlVolume = $(".player-volume-toggle-btn");
+
+if (audioPlayer && audioPlayer.dataset.src) {
+    const audio = new Audio(audioPlayer.dataset.src);
+
+    if (verticalVolume && controlVolume) {
+        controlVolume.onclick = () => verticalVolume.classList.toggle("is-active");
+    }
+
+    const volumeSlider = $(".player-volume", audioPlayer);
+    volumeSlider.addEventListener("change", e => {
+        const value = e.currentTarget.value;
+        audio.volume = value / 100;
+        if (verticalVolume && controlVolume) setVolumeIcon(value);
+        localStorage.setItem("player_vol", audio.volume);
+    });
+
+    const savedVolume = localStorage.getItem("player_vol");
+    if (savedVolume) {
+        audio.volume = savedVolume;
+        volumeSlider.value = 100 * savedVolume;
+    }
+    if (verticalVolume && controlVolume) setVolumeIcon(volumeSlider.value);
+
+    const playBtn = $(".player-toggle", audioPlayer);
 
     function setPlayStatus() {
-        e.load(), player.classList.toggle("is-playing"), e.play(), playBtn.innerHTML = '<svg class="i i-pause" viewBox="0 0 24 24"><path d="M5 4h4v16H5Zm10 0h4v16h-4Z"></path></svg>'
+        audio.load();
+        player.classList.add("is-playing");
+        audio.play();
+        playBtn.innerHTML = '<svg class="i i-pause" viewBox="0 0 24 24"><path d="M5 4h4v16H5Zm10 0h4v16h-4Z"></path></svg>';
     }
 
     function setPauseStatus() {
-        player.classList.toggle("is-playing"), e.pause(), playBtn.innerHTML = '<svg class="i i-play" viewBox="0 0 24 24"><path d="m7 3 14 9-14 9z"></path></svg>'
+        player.classList.remove("is-playing");
+        audio.pause();
+        playBtn.innerHTML = '<svg class="i i-play" viewBox="0 0 24 24"><path d="m7 3 14 9-14 9z"></path></svg>';
     }
-    "mediaSession" in navigator && (navigator.mediaSession.setActionHandler("play", (function() {
-        setPlayStatus()
-    })), navigator.mediaSession.setActionHandler("pause", (function() {
-        setPauseStatus()
-    }))), playBtn.addEventListener("click", (() => {
-        e.paused ? setPlayStatus() : setPauseStatus()
-    }), !1)
+
+    if ("mediaSession" in navigator) {
+        navigator.mediaSession.setActionHandler("play", setPlayStatus);
+        navigator.mediaSession.setActionHandler("pause", setPauseStatus);
+    }
+
+    playBtn.addEventListener("click", () => {
+        audio.paused ? setPlayStatus() : setPauseStatus();
+    });
 }
+
 const boxplay = "https://radio.ltg.network/api/nowplaying_static/radyongsira.json";
 
 function playerInit() {
-    fetch(boxplay).then((e => e.json())).then((e => {
-        let t = e.song_history,
-            a = $$("playerHistory"),
-            o = $(".song-now", player),
-            n = $(".song-next", player),
-            l = e.now_playing.remaining,
-            s = $(".player-poster");
-            olv = $(".live-is_live", player);
-            liv = $(".live-streamer_name", player);
-            art = $(".live-art", player);
-            lis = $(".listeners-total", player);
+    fetch(boxplay)
+        .then(res => res.json())
+        .then(data => {
+            const history = data.song_history;
+            const historyElem = $$("playerHistory");
+            const nowElem = $(".song-now", player);
+            const nextElem = $(".song-next", player);
+            const poster = $(".player-poster");
+            const liveStatus = $(".live-is_live", player);
+            const liveStreamer = $(".live-streamer_name", player);
+            const liveArt = $(".live-art", player);
+            const listenersElem = $(".listeners-total", player);
 
-        s && s.src && (s.crossOrigin = "Anonymous", s.src = "https://wsrv.nl/?url=" + encodeURIComponent(e.now_playing.song.art), setAccentColor(document.body, s)), o && setPlayerMeta(o, e.now_playing.song), a && (a.innerHTML = createHistory(t, a.dataset.results || 5)), setScrollText(), "mediaSession" in navigator && (navigator.mediaSession.metadata = new MediaMetadata({
-            title: e.now_playing.song.title,
-            artist: e.now_playing.song.artist,
-            album: e.now_playing.song.album,
-            artwork: [{
-                src: e.now_playing.song.art,
-                sizes: "96x96",
-                type: "image/png"
-            }, {
-                src: e.now_playing.song.art,
-                sizes: "128x128",
-                type: "image/png"
-            }, {
-                src: e.now_playing.song.art,
-                sizes: "192x192",
-                type: "image/png"
-            }, {
-                src: e.now_playing.song.art,
-                sizes: "256x256",
-                type: "image/png"
-            }]
-        })), setTimeout(playerInit, 1e3 * 2)
+            if (poster && poster.src) {
+                poster.crossOrigin = "Anonymous";
+                poster.src = "https://wsrv.nl/?url=" + encodeURIComponent(data.now_playing.song.art);
+                setAccentColor(document.body, poster);
+            }
+            if (nowElem) setPlayerMeta(nowElem, data.now_playing.song);
+            if (historyElem) historyElem.innerHTML = createHistory(history, historyElem.dataset.results || 5);
+            setScrollText();
 
-        if (e.live.is_live == true) {
-            document.getElementById("radio-status-text").innerHTML = "LIVE:" + " " + e.live.streamer_name;
-            document.getElementById("live-broadcaster").src = e.live.art;
-            
-        } else {
-        document.getElementById("radio-status-text").innerHTML = "all djs are offline at the moment, on autodj mode";
-        n && setPlayerMeta(n, e.playing_next.song);
-        document.getElementById("live-broadcaster").src = "https://i.imgur.com/Dtanzpr.png";
-        }
-        
-        document.getElementById("live-listeners").innerHTML = "Listeners:" + " " + e.listeners.total;
-        
-    })).catch((e => console.log(e)))
+            if ("mediaSession" in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: data.now_playing.song.title,
+                    artist: data.now_playing.song.artist,
+                    album: data.now_playing.song.album,
+                    artwork: [
+                        { src: data.now_playing.song.art, sizes: "96x96", type: "image/png" },
+                        { src: data.now_playing.song.art, sizes: "128x128", type: "image/png" },
+                        { src: data.now_playing.song.art, sizes: "192x192", type: "image/png" },
+                        { src: data.now_playing.song.art, sizes: "256x256", type: "image/png" }
+                    ]
+                });
+            }
+
+            setTimeout(playerInit, 2000);
+
+            if (data.live.is_live) {
+                $$("radio-status-text").innerHTML = "LIVE: " + data.live.streamer_name;
+                $$("live-broadcaster").src = data.live.art;
+            } else {
+                $$("radio-status-text").innerHTML = "all djs are offline at the moment, on autodj mode";
+                if (nextElem) setPlayerMeta(nextElem, data.playing_next.song);
+                $$("live-broadcaster").src = "https://i.imgur.com/Dtanzpr.png";
+            }
+
+            $$("live-listeners").innerHTML = "Listeners: " + data.listeners.total;
+        })
+        .catch(console.log);
 }
 playerInit();
 
 function navBar() {
-    var x = document.getElementById("myTopnav");
-    if (x.className === "topnav") {
-      x.className += " responsive";
-    } else {
-      x.className = "topnav";
-    }
-  }
+    const nav = $$("myTopnav");
+    nav.className = nav.className === "topnav" ? "topnav responsive" : "topnav";
+}
