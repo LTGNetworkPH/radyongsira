@@ -769,7 +769,7 @@ i.fa-brands.fa-discord {
     display: flex;
     overflow: hidden;
     white-space: nowrap;
-
+    gap: var(--gap);
     @media (max-width:991px) {
         margin-top: 0.8rem;
     }
@@ -785,6 +785,7 @@ i.fa-brands.fa-discord {
     animation: livebanner 18s linear infinite;
     margin-bottom: 0.2rem;
     margin-top: 0.2rem;
+    gap: var(--gap);
 
     @media (max-width:991px) {
         font-size: 1rem;
@@ -814,7 +815,7 @@ i.fa-brands.fa-discord {
 }
 
 @keyframes livebanner {
-    0% {
+    /* 0% {
         margin-left: 100%;
         transform: translateX(0%);
     }
@@ -822,6 +823,14 @@ i.fa-brands.fa-discord {
     100% {
         margin-left: 0;
         transform: translateX(-100%);
+    } */
+    
+    from {
+    transform: translateX(0);
+    }
+    
+    to {
+    transform: translateX(calc(-100% - var(--gap)));
     }
 }
 
