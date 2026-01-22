@@ -273,9 +273,12 @@ function playerInit() {
 
             const statusTextElem = $$("radio-status-text");
             const liveBroadcasterElem = $$("live-broadcaster");
+            const nextSongContainer = nextElem ? nextElem.closest('.song-next') : null;
 
             if (data.live.is_live) {
                 if (statusTextElem) statusTextElem.innerHTML = "LIVE: " + data.live.streamer_name;
+                // Hide next song tab when live
+                if (nextSongContainer) nextSongContainer.style.display = "none";
                 if (liveBroadcasterElem) {
                     const target = proxiedUrl(data.live.art);
                     if (liveBroadcasterElem.dataset._lastSrc !== target) {
@@ -289,6 +292,8 @@ function playerInit() {
                 }
             } else {
                 if (statusTextElem) statusTextElem.innerHTML = "all djs are offline at the moment, on autodj mode";
+                // Show next song tab when not live
+                if (nextSongContainer) nextSongContainer.style.display = "";
                 if (nextElem) setPlayerMeta(nextElem, data.playing_next.song);
                 if (liveBroadcasterElem) {
                     const fallback = proxiedUrl('https://i.imgur.com/Dtanzpr.png');
