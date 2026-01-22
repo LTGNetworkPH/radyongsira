@@ -20,7 +20,7 @@ function setAccentColor(element, img) {
             // Silently fail if CORS prevents color extraction
             // This is expected for proxy-served images (wsrv.nl)
             // Fall back to default accent color already set in CSS
-            console.debug('Color extraction skipped (CORS):', err.message);
+            // No logging - expected behavior for proxy images
         }
     };
     
@@ -30,7 +30,7 @@ function setAccentColor(element, img) {
         // use the `once` option so the listener is removed automatically
         img.addEventListener("load", setColor, { once: true });
         img.addEventListener("error", () => {
-            console.debug('Image failed to load, skipping color extraction');
+            // Silently fail if image load fails - will use default accent color
         }, { once: true });
     }
 }
@@ -225,8 +225,7 @@ function playerInit() {
                         setAccentColor(document.body, poster);
                     }, { once: true });
                     tmp.addEventListener('error', () => {
-                        // keep existing poster on error
-                        console.log('poster preload failed for', newPosterUrl);
+                        // keep existing poster on error - expected if image is unavailable
                     }, { once: true });
                     tmp.src = newPosterUrl;
                 }
@@ -268,7 +267,7 @@ function playerInit() {
                         const tmp = new Image();
                         tmp.crossOrigin = 'Anonymous';
                         tmp.addEventListener('load', () => { liveBroadcasterElem.src = target; }, { once: true });
-                        tmp.addEventListener('error', () => { console.log('live-broadcaster preload failed', target); }, { once: true });
+                        tmp.addEventListener('error', () => { /* Preload failed, will keep existing image */ }, { once: true });
                         tmp.src = target;
                     }
                 }
@@ -282,7 +281,7 @@ function playerInit() {
                         const tmp = new Image();
                         tmp.crossOrigin = 'Anonymous';
                         tmp.addEventListener('load', () => { liveBroadcasterElem.src = fallback; }, { once: true });
-                        tmp.addEventListener('error', () => { console.log('live-broadcaster preload failed', fallback); }, { once: true });
+                        tmp.addEventListener('error', () => { /* Fallback preload failed, will use existing image */ }, { once: true });
                         tmp.src = fallback;
                     }
                 }
