@@ -100,10 +100,10 @@
           </div>
 
           <style>
-            .rs-nav { font-family: var(--font-secondary, Roboto, Arial, sans-serif); position:fixed; top:0; left:0; right:0; z-index:1100; background:var(--bg-black,#000); width:100%; }
-            .rs-nav-inner { max-width:100%; width:100%; display:flex; align-items:center; padding:.75rem 1rem; gap:0; justify-content:center; position:relative; }
+            .rs-nav { font-family: var(--font-secondary, Roboto, Arial, sans-serif); position:fixed; top:0; left:0; right:0; z-index:1100; background:var(--bg-black,#000); width:100%; box-sizing:border-box; }
+            .rs-nav-inner { max-width:100%; width:100%; display:flex; align-items:center; padding:.75rem 1rem; gap:0; justify-content:center; position:relative; box-sizing:border-box; }
             .rs-brand { color: var(--color-title,#fff); font-weight:700; text-decoration:none; display:none; margin-right:auto; }
-            .rs-toggle { background:transparent; border:0; color:var(--color-title,#fff); display:none; cursor:pointer; z-index:2001; pointer-events:auto; touch-action:manipulation; -webkit-tap-highlight-color:transparent; width:50px; height:50px; padding:8px; align-items:center; justify-content:center; position:relative; margin-left:auto; }
+            .rs-toggle { background:transparent; border:0; color:var(--color-title,#fff); display:none; cursor:pointer; z-index:2001; pointer-events:auto; touch-action:manipulation; -webkit-tap-highlight-color:transparent; width:50px; height:50px; padding:8px; align-items:center; justify-content:center; position:relative; margin-left:auto; box-sizing:border-box; flex-shrink:0; }
             .rs-bars { display:inline-block; width:24px; height:2px; background:currentColor; position:relative; pointer-events:none; }
             .rs-bars::before, .rs-bars::after { content:""; position:absolute; left:0; width:100%; height:2px; background:currentColor }
             .rs-bars::before { top:-8px } .rs-bars::after { top:8px }
@@ -119,7 +119,7 @@
               .rs-nav { padding-top:0; }
               .rs-nav-inner { padding:0.65rem 1rem; justify-content:space-between; align-items:center; }
               .rs-brand { display:none !important; }
-              .rs-toggle { display:flex; margin-left:auto; flex-shrink:0; }
+              .rs-toggle { display:flex; margin-left:0; }
               .rs-toggle:active { background-color:rgba(255,255,255,0.15); }
               .rs-menu { position:fixed; right:0; top:60px; height:calc(100vh - 60px); width:100%; max-width:280px; background:var(--bg-black,#000); flex-direction:column; padding:1rem 0; margin:0; gap:0; transform:translateX(100%); transition:transform .3s ease-in-out; z-index:2000; overflow-y:auto; border-left:1px solid rgba(255,255,255,0.1); }
               .rs-menu li { display:block; padding:0; margin:0; }
