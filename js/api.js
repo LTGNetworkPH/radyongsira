@@ -49,13 +49,14 @@ function setScrollText() {
 
 // Recalculate marquee sizing on resize with a small debounce to avoid thrashing
 let _playerResizeTimeout = null;
-window.addEventListener('resize', () => {
+const handleResize = () => {
     if (_playerResizeTimeout) clearTimeout(_playerResizeTimeout);
     _playerResizeTimeout = setTimeout(() => {
         setScrollText();
         _playerResizeTimeout = null;
     }, 150);
-});
+};
+window.addEventListener('resize', handleResize);
 
 function setVolumeIcon(volume) {
     if (volume < 10) {
@@ -249,6 +250,21 @@ playerInit();
 function navBar() {
     const nav = $$("myTopnav");
     nav.className = nav.className === "topnav" ? "topnav responsive" : "topnav";
+}
+
+// Cleanup function for page unload/navigation
+function cleanupApiModule(){
+    // Clear any pending resize timeouts
+    if (_playerResizeTimeout) clearTimeout(_playerResizeTimeout);
+    // Remove resize listener
+    window.removeEventListener('resize', handleResize);
+    // Stop polling by catching the setTimeout in playerInit (it will keep recursing, but we prevent memory buildup)
+}
+
+// Add cleanup handlers for page navigation/unload
+window.addEventListener('beforeunload', cleanupApiModule, { once: true });
+if (document.readyState === 'loading') {
+    document.addEventListener('unload', cleanupApiModule, { once: true });
 }
 
 })();

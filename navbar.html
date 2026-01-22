@@ -51,19 +51,38 @@
             const toggle = document.currentScript && document.currentScript.previousElementSibling ? document.currentScript.previousElementSibling.querySelector('.rs-toggle') : document.querySelector('.rs-toggle');
             const menu = document.getElementById('rs-menu');
             if (!toggle || !menu) return;
+            
             function setOpen(open){
                 toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
                 menu.classList.toggle('open', !!open);
             }
-            toggle.addEventListener('click', ()=> setOpen(menu.classList.toggle('open')));
-            // close on escape
-            document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && menu.classList.contains('open')) setOpen(false); });
-            // close when clicking links
-            menu.addEventListener('click', (e)=>{ if(e.target.tagName==='A') setOpen(false); });
-            // close on outside click
-            document.addEventListener('click', (e)=>{ if(menu.classList.contains('open') && !menu.contains(e.target) && !toggle.contains(e.target)) setOpen(false); });
-            // ensure aria state is correct on resize
-            window.addEventListener('resize', ()=>{ if(window.innerWidth>900) setOpen(false); });
+            
+            // Handler functions for cleanup
+            const handleToggleClick = ()=> setOpen(menu.classList.toggle('open'));
+            const handleEscape = (e)=>{ if(e.key==='Escape' && menu.classList.contains('open')) setOpen(false); };
+            const handleMenuClick = (e)=>{ if(e.target.tagName==='A') setOpen(false); };
+            const handleOutsideClick = (e)=>{ if(menu.classList.contains('open') && !menu.contains(e.target) && !toggle.contains(e.target)) setOpen(false); };
+            const handleResize = ()=>{ if(window.innerWidth>900) setOpen(false); };
+            
+            // Attach listeners
+            toggle.addEventListener('click', handleToggleClick);
+            document.addEventListener('keydown', handleEscape);
+            menu.addEventListener('click', handleMenuClick);
+            document.addEventListener('click', handleOutsideClick);
+            window.addEventListener('resize', handleResize);
+            
+            // Cleanup function for page unload/navigation
+            function cleanup(){
+                toggle.removeEventListener('click', handleToggleClick);
+                document.removeEventListener('keydown', handleEscape);
+                menu.removeEventListener('click', handleMenuClick);
+                document.removeEventListener('click', handleOutsideClick);
+                window.removeEventListener('resize', handleResize);
+            }
+            
+            // Add cleanup handlers
+            window.addEventListener('beforeunload', cleanup, { once: true });
+            window.addEventListener('unload', cleanup, { once: true });
         })();
     </script>
 </nav>
