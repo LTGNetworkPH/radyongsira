@@ -1,7 +1,4 @@
-::after,
-::before {
-    box-sizing: border-box
-}
+/* MOVED to css/boxplayer.css - file removed from root */
 
 html {
     line-height: 1.15;
