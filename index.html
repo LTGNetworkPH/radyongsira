@@ -76,10 +76,6 @@
         <nav class="rs-nav bg-black" aria-label="Primary">
           <div class="rs-nav-inner container">
             <a class="rs-brand" href="./index.html">Home</a>
-            <button class="rs-toggle" aria-expanded="false" aria-controls="rs-menu" aria-label="Open menu">
-              <span class="rs-bars" aria-hidden="true"></span>
-            </button>
-
             <ul class="rs-menu" id="rs-menu">
               <li><a href="./index.html">Home</a></li>
               <li><a href="./charts.html">Charts</a></li>
@@ -94,78 +90,91 @@
           </div>
 
           <style>
-            .rs-nav { font-family: var(--font-secondary, Roboto, Arial, sans-serif); position:relative; overflow:visible; }
-            .rs-nav .container { max-width: 1100px; margin: 0 auto; display:flex; align-items:center; padding:.5rem 1rem; gap:1rem; overflow:visible; }
-            .rs-brand { color: var(--color-title,#fff); font-weight:700; text-decoration:none; }
-            .rs-toggle { background:transparent; border:0; color:var(--color-title,#fff); width:54px; height:54px; display:flex; align-items:center; justify-content:center; cursor:pointer; padding:0; z-index:1201; pointer-events:auto; touch-action:manipulation; }
+            .rs-nav { font-family: var(--font-secondary, Roboto, Arial, sans-serif); position:relative; z-index:1100; }
+            .rs-nav .container { max-width: 1100px; margin: 0 auto; display:flex; align-items:center; padding:.5rem 1rem; gap:1rem; justify-content:center; }
+            .rs-brand { color: var(--color-title,#fff); font-weight:700; text-decoration:none; display:none; }
+            .rs-toggle { background:transparent; border:0; color:var(--color-title,#fff); display:none; cursor:pointer; z-index:1201; pointer-events:auto !important; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
             .rs-bars { display:inline-block; width:20px; height:2px; background:currentColor; position:relative; pointer-events:none; }
             .rs-bars::before, .rs-bars::after { content:""; position:absolute; left:0; width:100%; height:2px; background:currentColor }
             .rs-bars::before { top:-6px } .rs-bars::after { top:6px }
 
-            .rs-menu { list-style:none; margin:0; padding:0; display:flex; gap:1rem; align-items:center }
-            .rs-menu a { color:var(--color-text,#c4c4c4); text-decoration:none; padding:.5rem .6rem; display:block; font-weight:600 }
+            .rs-menu { list-style:none; margin:0; padding:0; display:flex; gap:1rem; align-items:center; flex-wrap:nowrap; }
+            .rs-menu li { display:flex; align-items:center; }
+            .rs-menu a { color:var(--color-text,#c4c4c4); text-decoration:none; padding:.5rem .6rem; display:block; font-weight:600; }
             .rs-menu a:hover, .rs-menu a:focus { color:var(--color-title,#fff); }
+            .rs-menu.hidden { display:none; }
 
             /* Mobile: hide menu, show toggle */
             @media (max-width: 900px) {
-              .rs-nav .container { position:relative; padding:0.75rem 1rem; }
-              .rs-brand { position:absolute; left:50%; transform:translateX(-50%); padding:0.5rem 0; }
-              .rs-toggle { position:absolute; right:0.5rem; top:50%; transform:translateY(-50%); z-index:1201; }
-              .rs-menu { position:fixed; right:0; top:0; height:100%; width:280px; background:var(--bg-black,#000); flex-direction:column; padding:4rem 1rem 1rem 1rem; gap:0.5rem; transform:translateX(100%); transition:transform .28s ease-in-out; box-shadow: -10px 0 30px rgba(0,0,0,.4); z-index:1200; overflow-y:auto; }
-              .rs-menu li { padding:0.5rem 0; }
-              .rs-menu a { padding:0.75rem 1rem; }
+              .rs-nav .container { padding:0.75rem 1rem; justify-content:flex-start; }
+              .rs-brand { display:block; position:relative; margin-right:auto; order:2; }
+              .rs-toggle { display:flex; position:fixed; right:1rem; top:1rem; width:54px; height:54px; align-items:center; justify-content:center; padding:0; background:transparent; border:none; }
+              .rs-toggle:active { background-color:rgba(255,255,255,0.1); border-radius:4px; }
+              .rs-menu { position:fixed; right:0; top:0; height:100%; width:280px; background:var(--bg-black,#000); flex-direction:column; padding:5rem 0 1rem 0; gap:0; transform:translateX(100%); transition:transform .28s ease-in-out; box-shadow: -10px 0 30px rgba(0,0,0,.4); z-index:1200; overflow-y:auto; }
+              .rs-menu li { display:block; padding:0; }
+              .rs-menu a { padding:0.75rem 1rem; display:block; border-bottom:1px solid #333; }
               .rs-menu.open { transform:translateX(0); }
             }
 
             /* Desktop: hide toggle and brand, show menu */
             @media (min-width: 901px) {
-              .rs-toggle { display:none }
-              .rs-brand { display:none }
+              .rs-toggle { display:none !important; }
+              .rs-brand { display:none !important; }
               .rs-nav .container { justify-content:center; }
             }
           </style>
 
           <script>
             (function(){
-              const toggle = document.currentScript && document.currentScript.previousElementSibling ? document.currentScript.previousElementSibling.querySelector('.rs-toggle') : document.querySelector('.rs-toggle');
+              const toggle = document.querySelector('.rs-toggle');
               const menu = document.getElementById('rs-menu');
               if (!toggle || !menu) return;
               
               function setOpen(open){
                 toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-                menu.classList.toggle('open', !!open);
+                if(open) {
+                  menu.classList.remove('hidden');
+                  menu.classList.add('open');
+                } else {
+                  menu.classList.remove('open');
+                  setTimeout(()=> menu.classList.add('hidden'), 280);
+                }
               }
               
-              // Handler functions for cleanup
-              const handleToggleClick = ()=> setOpen(menu.classList.toggle('open'));
+              const handleToggleClick = (e)=> {
+                e.stopPropagation();
+                setOpen(!menu.classList.contains('open'));
+              };
               const handleEscape = (e)=>{ if(e.key==='Escape' && menu.classList.contains('open')) setOpen(false); };
               const handleMenuClick = (e)=>{ if(e.target.tagName==='A') setOpen(false); };
               const handleOutsideClick = (e)=>{ if(menu.classList.contains('open') && !menu.contains(e.target) && !toggle.contains(e.target)) setOpen(false); };
-              const handleResize = ()=>{ if(window.innerWidth>900) setOpen(false); };
+              const handleResize = ()=>{ if(window.innerWidth>900 && menu.classList.contains('open')) setOpen(false); };
               
-              // Attach listeners
-              toggle.addEventListener('click', handleToggleClick);
+              toggle.addEventListener('click', handleToggleClick, false);
+              toggle.addEventListener('touchend', handleToggleClick, false);
               document.addEventListener('keydown', handleEscape);
               menu.addEventListener('click', handleMenuClick);
               document.addEventListener('click', handleOutsideClick);
               window.addEventListener('resize', handleResize);
               
-              // Cleanup function for page unload/navigation
               function cleanup(){
                 toggle.removeEventListener('click', handleToggleClick);
+                toggle.removeEventListener('touchend', handleToggleClick);
                 document.removeEventListener('keydown', handleEscape);
                 menu.removeEventListener('click', handleMenuClick);
                 document.removeEventListener('click', handleOutsideClick);
                 window.removeEventListener('resize', handleResize);
               }
               
-              // Add cleanup handlers
               window.addEventListener('beforeunload', cleanup, { once: true });
               window.addEventListener('unload', cleanup, { once: true });
             })();
           </script>
+          <button class="rs-toggle" aria-expanded="false" aria-controls="rs-menu" aria-label="Open menu">
+            <span class="rs-bars" aria-hidden="true"></span>
+          </button>
         </nav>
-        <div class="bg-black flex justify-center">
+        <div class="bg-black flex justify-center" style="margin-top: 1.5rem;">
           <span class="uppercase fs-6 fw-400 px-.5 py-.25">
             <img
               alt="live"
