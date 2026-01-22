@@ -126,6 +126,51 @@ if (audioPlayer && audioPlayer.dataset.src) {
             audio.paused ? setPlayStatus() : setPauseStatus();
         });
     }
+
+    // Audio error/disconnect recovery
+    let audioReconnectAttempts = 0;
+    const maxAudioReconnectAttempts = 5;
+    
+    function handleAudioError(event) {
+        console.warn('Audio error:', event.type, audio.error?.code, audio.error?.message);
+        
+        // Don't retry if already playing successfully
+        if (!audio.paused && audio.currentTime > 0) return;
+        
+        // Attempt to recover
+        if (audioReconnectAttempts < maxAudioReconnectAttempts) {
+            audioReconnectAttempts++;
+            console.log(`Audio recovery attempt ${audioReconnectAttempts}/${maxAudioReconnectAttempts}`);
+            
+            // Exponential backoff: 100ms, 200ms, 400ms, 800ms, 1600ms
+            const delay = 100 * Math.pow(2, audioReconnectAttempts - 1);
+            setTimeout(() => {
+                try {
+                    audio.load(); // Reset audio element
+                    if (!audio.paused) {
+                        audio.play().catch(err => {
+                            console.warn('Audio play failed during recovery:', err.message);
+                        });
+                    }
+                } catch (err) {
+                    console.error('Audio recovery failed:', err.message);
+                }
+            }, delay);
+        } else {
+            console.error('Audio recovery failed after max attempts');
+        }
+    }
+    
+    // Reset recovery attempts when audio plays successfully
+    function handleAudioPlay() {
+        audioReconnectAttempts = 0;
+    }
+    
+    // Add error listeners for various failure scenarios
+    audio.addEventListener('error', handleAudioError);
+    audio.addEventListener('stalled', handleAudioError);
+    audio.addEventListener('suspended', handleAudioError);
+    audio.addEventListener('play', handleAudioPlay, { once: true });
 }
 
 const boxplay = "https://radio.ltg.network/api/nowplaying_static/radyongsira.json";
@@ -258,6 +303,20 @@ function cleanupApiModule(){
     if (_playerResizeTimeout) clearTimeout(_playerResizeTimeout);
     // Remove resize listener
     window.removeEventListener('resize', handleResize);
+    // Clean up audio error handlers if audio element exists
+    if (audioPlayer && audioPlayer.dataset.src) {
+        // Note: We can't access audio variable from here (it's in a closure),
+        // but we stop playback to prevent background audio after page unload
+        try {
+            const allAudio = document.querySelectorAll('audio');
+            allAudio.forEach(a => {
+                a.pause();
+                a.src = '';
+            });
+        } catch (e) {
+            console.warn('Audio cleanup error:', e);
+        }
+    }
     // Stop polling by catching the setTimeout in playerInit (it will keep recursing, but we prevent memory buildup)
 }
 
