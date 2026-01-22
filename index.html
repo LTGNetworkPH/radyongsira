@@ -87,40 +87,47 @@
               <li><a href="https://radio.ltg.network/public/radyongsira/playlist.m3u" target="_blank" rel="noopener">M3U</a></li>
               <li><a href="https://radio.ltg.network/public/radyongsira/playlist.pls" rel="noopener">PLS</a></li>
             </ul>
+            <button class="rs-toggle" aria-expanded="false" aria-controls="rs-menu" aria-label="Open menu">
+              <span class="rs-bars" aria-hidden="true"></span>
+            </button>
           </div>
 
           <style>
-            .rs-nav { font-family: var(--font-secondary, Roboto, Arial, sans-serif); position:relative; z-index:1100; }
-            .rs-nav .container { max-width: 1100px; margin: 0 auto; display:flex; align-items:center; padding:.5rem 1rem; gap:1rem; justify-content:center; }
-            .rs-brand { color: var(--color-title,#fff); font-weight:700; text-decoration:none; display:none; }
-            .rs-toggle { background:transparent; border:0; color:var(--color-title,#fff); display:none; cursor:pointer; z-index:1201; pointer-events:auto !important; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
-            .rs-bars { display:inline-block; width:20px; height:2px; background:currentColor; position:relative; pointer-events:none; }
+            .rs-nav { font-family: var(--font-secondary, Roboto, Arial, sans-serif); position:fixed; top:0; left:0; right:0; z-index:1100; background:var(--bg-black,#000); width:100%; }
+            .rs-nav-inner { max-width:100%; width:100%; display:flex; align-items:center; padding:.75rem 1rem; gap:0; justify-content:center; position:relative; }
+            .rs-brand { color: var(--color-title,#fff); font-weight:700; text-decoration:none; display:none; margin-right:auto; }
+            .rs-toggle { background:transparent; border:0; color:var(--color-title,#fff); display:none; cursor:pointer; z-index:2001; pointer-events:auto; touch-action:manipulation; -webkit-tap-highlight-color:transparent; width:50px; height:50px; padding:8px; align-items:center; justify-content:center; position:relative; margin-left:auto; }
+            .rs-bars { display:inline-block; width:24px; height:2px; background:currentColor; position:relative; pointer-events:none; }
             .rs-bars::before, .rs-bars::after { content:""; position:absolute; left:0; width:100%; height:2px; background:currentColor }
-            .rs-bars::before { top:-6px } .rs-bars::after { top:6px }
+            .rs-bars::before { top:-8px } .rs-bars::after { top:8px }
 
             .rs-menu { list-style:none; margin:0; padding:0; display:flex; gap:1rem; align-items:center; flex-wrap:nowrap; }
             .rs-menu li { display:flex; align-items:center; }
             .rs-menu a { color:var(--color-text,#c4c4c4); text-decoration:none; padding:.5rem .6rem; display:block; font-weight:600; }
             .rs-menu a:hover, .rs-menu a:focus { color:var(--color-title,#fff); }
-            .rs-menu.hidden { display:none; }
 
             /* Mobile: hide menu, show toggle */
             @media (max-width: 900px) {
-              .rs-nav .container { padding:0.75rem 1rem; justify-content:flex-start; }
-              .rs-brand { display:block; position:relative; margin-right:auto; order:2; }
-              .rs-toggle { display:flex; position:fixed; right:1rem; top:1rem; width:54px; height:54px; align-items:center; justify-content:center; padding:0; background:transparent; border:none; }
-              .rs-toggle:active { background-color:rgba(255,255,255,0.1); border-radius:4px; }
-              .rs-menu { position:fixed; right:0; top:0; height:100%; width:280px; background:var(--bg-black,#000); flex-direction:column; padding:5rem 0 1rem 0; gap:0; transform:translateX(100%); transition:transform .28s ease-in-out; box-shadow: -10px 0 30px rgba(0,0,0,.4); z-index:1200; overflow-y:auto; }
-              .rs-menu li { display:block; padding:0; }
-              .rs-menu a { padding:0.75rem 1rem; display:block; border-bottom:1px solid #333; }
+              #header { padding-top: 60px; }
+              .rs-nav { padding-top:0; }
+              .rs-nav-inner { padding:0.65rem 1rem; justify-content:space-between; align-items:center; }
+              .rs-brand { display:none !important; }
+              .rs-toggle { display:flex; margin-left:auto; flex-shrink:0; }
+              .rs-toggle:active { background-color:rgba(255,255,255,0.15); }
+              .rs-menu { position:fixed; right:0; top:60px; height:calc(100vh - 60px); width:100%; max-width:280px; background:var(--bg-black,#000); flex-direction:column; padding:1rem 0; margin:0; gap:0; transform:translateX(100%); transition:transform .3s ease-in-out; z-index:2000; overflow-y:auto; border-left:1px solid rgba(255,255,255,0.1); }
+              .rs-menu li { display:block; padding:0; margin:0; }
+              .rs-menu a { padding:1rem 1.5rem; display:block; border-bottom:1px solid rgba(255,255,255,0.05); color:var(--color-text,#c4c4c4); font-size:.95rem; transition:background-color .2s; }
+              .rs-menu a:hover { background-color:rgba(255,255,255,0.08); }
               .rs-menu.open { transform:translateX(0); }
+              body.rs-menu-open { overflow:hidden; }
             }
 
             /* Desktop: hide toggle and brand, show menu */
             @media (min-width: 901px) {
+              .rs-nav { position:static; }
               .rs-toggle { display:none !important; }
               .rs-brand { display:none !important; }
-              .rs-nav .container { justify-content:center; }
+              .rs-nav-inner { justify-content:center; gap:2rem; }
             }
           </style>
 
@@ -128,30 +135,49 @@
             (function(){
               const toggle = document.querySelector('.rs-toggle');
               const menu = document.getElementById('rs-menu');
+              const body = document.body;
               if (!toggle || !menu) return;
               
+              let isOpen = false;
+              
               function setOpen(open){
-                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+                isOpen = open;
+                toggle.setAttribute('aria-expanded', open);
                 if(open) {
-                  menu.classList.remove('hidden');
                   menu.classList.add('open');
+                  body.classList.add('rs-menu-open');
                 } else {
                   menu.classList.remove('open');
-                  setTimeout(()=> menu.classList.add('hidden'), 280);
+                  body.classList.remove('rs-menu-open');
                 }
               }
               
-              const handleToggleClick = (e)=> {
+              function handleToggleClick(e){
+                e.preventDefault();
                 e.stopPropagation();
-                setOpen(!menu.classList.contains('open'));
-              };
-              const handleEscape = (e)=>{ if(e.key==='Escape' && menu.classList.contains('open')) setOpen(false); };
-              const handleMenuClick = (e)=>{ if(e.target.tagName==='A') setOpen(false); };
-              const handleOutsideClick = (e)=>{ if(menu.classList.contains('open') && !menu.contains(e.target) && !toggle.contains(e.target)) setOpen(false); };
-              const handleResize = ()=>{ if(window.innerWidth>900 && menu.classList.contains('open')) setOpen(false); };
+                setOpen(!isOpen);
+              }
               
-              toggle.addEventListener('click', handleToggleClick, false);
-              toggle.addEventListener('touchend', handleToggleClick, false);
+              function handleEscape(e){
+                if(e.key==='Escape' && isOpen) setOpen(false);
+              }
+              
+              function handleMenuClick(e){
+                if(e.target.tagName==='A') setOpen(false);
+              }
+              
+              function handleOutsideClick(e){
+                if(isOpen && !menu.contains(e.target) && !toggle.contains(e.target)) {
+                  setOpen(false);
+                }
+              }
+              
+              function handleResize(){
+                if(window.innerWidth > 900 && isOpen) setOpen(false);
+              }
+              
+              toggle.addEventListener('click', handleToggleClick);
+              toggle.addEventListener('touchstart', (e)=>e.preventDefault());
               document.addEventListener('keydown', handleEscape);
               menu.addEventListener('click', handleMenuClick);
               document.addEventListener('click', handleOutsideClick);
@@ -159,7 +185,6 @@
               
               function cleanup(){
                 toggle.removeEventListener('click', handleToggleClick);
-                toggle.removeEventListener('touchend', handleToggleClick);
                 document.removeEventListener('keydown', handleEscape);
                 menu.removeEventListener('click', handleMenuClick);
                 document.removeEventListener('click', handleOutsideClick);
@@ -167,14 +192,10 @@
               }
               
               window.addEventListener('beforeunload', cleanup, { once: true });
-              window.addEventListener('unload', cleanup, { once: true });
             })();
           </script>
-          <button class="rs-toggle" aria-expanded="false" aria-controls="rs-menu" aria-label="Open menu">
-            <span class="rs-bars" aria-hidden="true"></span>
-          </button>
         </nav>
-        <div class="bg-black flex justify-center" style="margin-top: 1.5rem;">
+        <div class="bg-black flex justify-center">
           <span class="uppercase fs-6 fw-400 px-.5 py-.25">
             <img
               alt="live"
