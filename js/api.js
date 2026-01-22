@@ -9,30 +9,29 @@ function $(selector, context = document) {
     return context.querySelector(selector);
 }
 
-function setAccentColor(element, img) {
+function setAccentColor(element, originalImg) {
     const colorThief = new ColorThief();
     const setColor = () => {
         try {
             // Try to extract dominant color from image
-            const color = colorThief.getColor(img);
+            const color = colorThief.getColor(originalImg);
             const rgbColor = `rgb(${color})`;
             element.style.setProperty("--accent", rgbColor);
             // Also set on .player element if it exists to ensure button gets the color
             if (player) player.style.setProperty("--accent", rgbColor);
         } catch (err) {
-            // Silently fail if CORS prevents color extraction
-            // This is expected for proxy-served images (wsrv.nl)
+            // Color extraction failed - likely due to CORS
+            console.warn('Color extraction failed:', err.message);
             // Fall back to default accent color already set in CSS
-            // No logging - expected behavior for proxy images
         }
     };
     
-    if (img.complete) {
+    if (originalImg.complete && originalImg.naturalWidth > 0) {
         setColor();
     } else {
         // use the `once` option so the listener is removed automatically
-        img.addEventListener("load", setColor, { once: true });
-        img.addEventListener("error", () => {
+        originalImg.addEventListener("load", setColor, { once: true });
+        originalImg.addEventListener("error", () => {
             // Silently fail if image load fails - will use default accent color
         }, { once: true });
     }
@@ -224,8 +223,13 @@ function playerInit() {
                     tmp.crossOrigin = 'Anonymous';
                     tmp.addEventListener('load', () => {
                         poster.src = newPosterUrl;
-                        // setAccentColor handles CORS errors gracefully
-                        setAccentColor(document.body, poster);
+                        // Use original image URL for color extraction (better CORS support)
+                        const colorImg = new Image();
+                        colorImg.crossOrigin = 'Anonymous';
+                        colorImg.addEventListener('load', () => {
+                            setAccentColor(document.body, colorImg);
+                        }, { once: true });
+                        colorImg.src = data.now_playing.song.art;
                     }, { once: true });
                     tmp.addEventListener('error', () => {
                         // keep existing poster on error - expected if image is unavailable
