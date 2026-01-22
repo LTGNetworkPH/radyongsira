@@ -9,7 +9,12 @@ function $(selector, context = document) {
 function setAccentColor(element, img) {
     const colorThief = new ColorThief();
     const setColor = () => element.setAttribute("style", `--accent: rgb(${colorThief.getColor(img)})`);
-    img.complete ? setColor() : img.addEventListener("load", setColor);
+    if (img.complete) {
+        setColor();
+    } else {
+        // use the `once` option so the listener is removed automatically
+        img.addEventListener("load", setColor, { once: true });
+    }
 }
 
 function setPlayerMeta(container, meta) {
@@ -32,12 +37,22 @@ function setScrollText() {
     document.querySelectorAll(".player-meta").forEach(e => {
         const title = $(".song-title", e);
         if (!title) return;
-        const titleWidth = title.offsetWidth;
-        const containerWidth = e.offsetWidth;
-        e.setAttribute("style", `--title-width:${containerWidth}px`);
+        const titleWidth = title.scrollWidth || title.offsetWidth;
+        const containerWidth = e.clientWidth || e.offsetWidth;
+        e.style.setProperty('--title-width', `${containerWidth}px`);
         title.classList.toggle("song-very-long", titleWidth > containerWidth);
     });
 }
+
+// Recalculate marquee sizing on resize with a small debounce to avoid thrashing
+let _playerResizeTimeout = null;
+window.addEventListener('resize', () => {
+    if (_playerResizeTimeout) clearTimeout(_playerResizeTimeout);
+    _playerResizeTimeout = setTimeout(() => {
+        setScrollText();
+        _playerResizeTimeout = null;
+    }, 150);
+});
 
 function setVolumeIcon(volume) {
     if (volume < 10) {
@@ -62,19 +77,22 @@ if (audioPlayer && audioPlayer.dataset.src) {
     }
 
     const volumeSlider = $(".player-volume", audioPlayer);
-    volumeSlider.addEventListener("change", e => {
-        const value = e.currentTarget.value;
-        audio.volume = value / 100;
-        if (verticalVolume && controlVolume) setVolumeIcon(value);
-        localStorage.setItem("player_vol", audio.volume);
-    });
-
-    const savedVolume = localStorage.getItem("player_vol");
-    if (savedVolume) {
-        audio.volume = savedVolume;
-        volumeSlider.value = 100 * savedVolume;
+    if (volumeSlider) {
+        volumeSlider.addEventListener("change", e => {
+            const value = e.currentTarget.value;
+            audio.volume = value / 100;
+            if (verticalVolume && controlVolume) setVolumeIcon(value);
+            localStorage.setItem("player_vol", audio.volume);
+        });
     }
-    if (verticalVolume && controlVolume) setVolumeIcon(volumeSlider.value);
+
+    const savedVolumeRaw = localStorage.getItem("player_vol");
+    const savedVolume = savedVolumeRaw !== null ? parseFloat(savedVolumeRaw) : null;
+    if (!Number.isNaN(savedVolume) && savedVolume !== null) {
+        audio.volume = savedVolume;
+        if (volumeSlider) volumeSlider.value = 100 * savedVolume;
+    }
+    if (verticalVolume && controlVolume && volumeSlider) setVolumeIcon(volumeSlider.value);
 
     const playBtn = $(".player-toggle", audioPlayer);
 
@@ -82,13 +100,13 @@ if (audioPlayer && audioPlayer.dataset.src) {
         audio.load();
         player.classList.add("is-playing");
         audio.play();
-        playBtn.innerHTML = '<svg class="i i-pause" viewBox="0 0 24 24"><path d="M5 4h4v16H5Zm10 0h4v16h-4Z"></path></svg>';
+        if (playBtn) playBtn.innerHTML = '<svg class="i i-pause" viewBox="0 0 24 24"><path d="M5 4h4v16H5Zm10 0h4v16h-4Z"></path></svg>';
     }
 
     function setPauseStatus() {
         player.classList.remove("is-playing");
         audio.pause();
-        playBtn.innerHTML = '<svg class="i i-play" viewBox="0 0 24 24"><path d="m7 3 14 9-14 9z"></path></svg>';
+        if (playBtn) playBtn.innerHTML = '<svg class="i i-play" viewBox="0 0 24 24"><path d="m7 3 14 9-14 9z"></path></svg>';
     }
 
     if ("mediaSession" in navigator) {
@@ -96,9 +114,11 @@ if (audioPlayer && audioPlayer.dataset.src) {
         navigator.mediaSession.setActionHandler("pause", setPauseStatus);
     }
 
-    playBtn.addEventListener("click", () => {
-        audio.paused ? setPlayStatus() : setPauseStatus();
-    });
+    if (playBtn) {
+        playBtn.addEventListener("click", () => {
+            audio.paused ? setPlayStatus() : setPauseStatus();
+        });
+    }
 }
 
 const boxplay = "https://radio.ltg.network/api/nowplaying_static/radyongsira.json";
@@ -117,10 +137,28 @@ function playerInit() {
             const liveArt = $(".live-art", player);
             const listenersElem = $(".listeners-total", player);
 
-            if (poster && poster.src) {
-                poster.crossOrigin = "Anonymous";
-                poster.src = "https://wsrv.nl/?url=" + encodeURIComponent(data.now_playing.song.art);
-                setAccentColor(document.body, poster);
+            if (poster) {
+                const newPosterUrl = "https://wsrv.nl/?url=" + encodeURIComponent(data.now_playing.song.art);
+                // avoid reassigning the same src repeatedly (prevents cancel/abort churn)
+                if (poster.dataset._lastSrc !== newPosterUrl) {
+                    poster.dataset._lastSrc = newPosterUrl;
+                    // preload via a temporary Image to avoid assigning a src that may get aborted
+                    const tmp = new Image();
+                    tmp.crossOrigin = 'Anonymous';
+                    tmp.addEventListener('load', () => {
+                        try {
+                            poster.src = newPosterUrl;
+                            setAccentColor(document.body, poster);
+                        } catch (e) {
+                            console.log('poster set failed', e);
+                        }
+                    }, { once: true });
+                    tmp.addEventListener('error', () => {
+                        // keep existing poster on error
+                        console.log('poster preload failed for', newPosterUrl);
+                    }, { once: true });
+                    tmp.src = newPosterUrl;
+                }
             }
             if (nowElem) setPlayerMeta(nowElem, data.now_playing.song);
             if (historyElem) historyElem.innerHTML = createHistory(history, historyElem.dataset.results || 5);
@@ -139,21 +177,50 @@ function playerInit() {
                     ]
                 });
             }
+            function proxiedUrl(url) {
+                try {
+                    return "https://wsrv.nl/?url=" + encodeURIComponent(url);
+                } catch (e) {
+                    return url;
+                }
+            }
 
-            setTimeout(playerInit, 2000);
+            const statusTextElem = $$("radio-status-text");
+            const liveBroadcasterElem = $$("live-broadcaster");
 
             if (data.live.is_live) {
-                $$("radio-status-text").innerHTML = "LIVE: " + data.live.streamer_name;
-                $$("live-broadcaster").src = data.live.art;
+                if (statusTextElem) statusTextElem.innerHTML = "LIVE: " + data.live.streamer_name;
+                if (liveBroadcasterElem) {
+                    const target = proxiedUrl(data.live.art);
+                    if (liveBroadcasterElem.dataset._lastSrc !== target) {
+                        liveBroadcasterElem.dataset._lastSrc = target;
+                        const tmp = new Image();
+                        tmp.crossOrigin = 'Anonymous';
+                        tmp.addEventListener('load', () => { liveBroadcasterElem.src = target; }, { once: true });
+                        tmp.addEventListener('error', () => { console.log('live-broadcaster preload failed', target); }, { once: true });
+                        tmp.src = target;
+                    }
+                }
             } else {
-                $$("radio-status-text").innerHTML = "all djs are offline at the moment, on autodj mode";
+                if (statusTextElem) statusTextElem.innerHTML = "all djs are offline at the moment, on autodj mode";
                 if (nextElem) setPlayerMeta(nextElem, data.playing_next.song);
-                $$("live-broadcaster").src = "https://i.imgur.com/Dtanzpr.png";
+                if (liveBroadcasterElem) {
+                    const fallback = proxiedUrl('https://i.imgur.com/Dtanzpr.png');
+                    if (liveBroadcasterElem.dataset._lastSrc !== fallback) {
+                        liveBroadcasterElem.dataset._lastSrc = fallback;
+                        const tmp = new Image();
+                        tmp.crossOrigin = 'Anonymous';
+                        tmp.addEventListener('load', () => { liveBroadcasterElem.src = fallback; }, { once: true });
+                        tmp.addEventListener('error', () => { console.log('live-broadcaster preload failed', fallback); }, { once: true });
+                        tmp.src = fallback;
+                    }
+                }
             }
 
             $$("live-listeners").innerHTML = "Listeners: " + data.listeners.total;
         })
-        .catch(console.log);
+        .catch(console.log)
+        .finally(() => setTimeout(playerInit, 2000));
 }
 playerInit();
 
