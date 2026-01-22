@@ -15,7 +15,10 @@ function setAccentColor(element, img) {
         try {
             // Try to extract dominant color from image
             const color = colorThief.getColor(img);
-            element.setAttribute("style", `--accent: rgb(${color})`);
+            const rgbColor = `rgb(${color})`;
+            element.style.setProperty("--accent", rgbColor);
+            // Also set on .player element if it exists to ensure button gets the color
+            if (player) player.style.setProperty("--accent", rgbColor);
         } catch (err) {
             // Silently fail if CORS prevents color extraction
             // This is expected for proxy-served images (wsrv.nl)
