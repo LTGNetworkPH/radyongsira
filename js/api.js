@@ -11,12 +11,27 @@ function $(selector, context = document) {
 
 function setAccentColor(element, img) {
     const colorThief = new ColorThief();
-    const setColor = () => element.setAttribute("style", `--accent: rgb(${colorThief.getColor(img)})`);
+    const setColor = () => {
+        try {
+            // Try to extract dominant color from image
+            const color = colorThief.getColor(img);
+            element.setAttribute("style", `--accent: rgb(${color})`);
+        } catch (err) {
+            // Silently fail if CORS prevents color extraction
+            // This is expected for proxy-served images (wsrv.nl)
+            // Fall back to default accent color already set in CSS
+            console.debug('Color extraction skipped (CORS):', err.message);
+        }
+    };
+    
     if (img.complete) {
         setColor();
     } else {
         // use the `once` option so the listener is removed automatically
         img.addEventListener("load", setColor, { once: true });
+        img.addEventListener("error", () => {
+            console.debug('Image failed to load, skipping color extraction');
+        }, { once: true });
     }
 }
 
@@ -205,12 +220,9 @@ function playerInit() {
                     const tmp = new Image();
                     tmp.crossOrigin = 'Anonymous';
                     tmp.addEventListener('load', () => {
-                        try {
-                            poster.src = newPosterUrl;
-                            setAccentColor(document.body, poster);
-                        } catch (e) {
-                            console.log('poster set failed', e);
-                        }
+                        poster.src = newPosterUrl;
+                        // setAccentColor handles CORS errors gracefully
+                        setAccentColor(document.body, poster);
                     }, { once: true });
                     tmp.addEventListener('error', () => {
                         // keep existing poster on error
