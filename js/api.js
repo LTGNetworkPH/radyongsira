@@ -19,9 +19,17 @@ function setAccentColor(element, originalImg) {
             element.style.setProperty("--accent", rgbColor);
             // Also set on .player element if it exists to ensure button gets the color
             if (player) player.style.setProperty("--accent", rgbColor);
+            // Also set directly on the toggle button
+            const toggleBtn = $(".player-toggle");
+            if (toggleBtn) {
+                toggleBtn.style.setProperty("--accent", rgbColor, "important");
+                toggleBtn.style.backgroundColor = rgbColor;
+            }
+            console.log('Accent color set:', rgbColor, 'Element:', element, 'Player:', player, 'Button:', toggleBtn);
         } catch (err) {
             // Color extraction failed - likely due to CORS
             console.warn('Color extraction failed:', err.message);
+            console.log('Image object:', originalImg, 'Image src:', originalImg.src, 'Complete:', originalImg.complete, 'NaturalWidth:', originalImg.naturalWidth);
             // Fall back to default accent color already set in CSS
         }
     };
@@ -33,6 +41,7 @@ function setAccentColor(element, originalImg) {
         originalImg.addEventListener("load", setColor, { once: true });
         originalImg.addEventListener("error", () => {
             // Silently fail if image load fails - will use default accent color
+            console.warn('Image load error for:', originalImg.src);
         }, { once: true });
     }
 }
