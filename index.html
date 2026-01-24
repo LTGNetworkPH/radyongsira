@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html
   dir="ltr"
   lang="en"
@@ -79,118 +79,311 @@
             <ul class="rs-menu" id="rs-menu">
               <li><a href="./index.html">Home</a></li>
               <li><a href="./charts.html">Charts</a></li>
-              <li><a href="https://radio.ltg.network/public/radyongsira/podcasts" target="_blank" rel="noopener">Podcasts</a></li>
+              <li>
+                <a
+                  href="https://radio.ltg.network/public/radyongsira/podcasts"
+                  target="_blank"
+                  rel="noopener"
+                  >Podcasts</a
+                >
+              </li>
               <li><a href="./schedule.html">Schedule</a></li>
-              <li><a href="https://www.internet-radio.com/" target="_blank" rel="noopener">Internet Radio</a></li>
-              <li><a href="https://onlineradiobox.com/ph/radyongsira/" target="_blank" rel="noopener">Online Radio Box</a></li>
-              <li><a href="https://www.radio-browser.info/history/9c64fb2a-cf4e-459d-99e7-14fb757219f6" target="_blank" rel="noopener">Radio-Browser.info</a></li>
-              <li><a href="https://radio.ltg.network/public/radyongsira/playlist.m3u" target="_blank" rel="noopener">M3U</a></li>
-              <li><a href="https://radio.ltg.network/public/radyongsira/playlist.pls" rel="noopener">PLS</a></li>
+              <li>
+                <a
+                  href="https://www.internet-radio.com/"
+                  target="_blank"
+                  rel="noopener"
+                  >Internet Radio</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://onlineradiobox.com/ph/radyongsira/"
+                  target="_blank"
+                  rel="noopener"
+                  >Online Radio Box</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://www.radio-browser.info/history/6c847f86-4c4e-4924-ae36-50ce9b719ebc"
+                  target="_blank"
+                  rel="noopener"
+                  >Radio-Browser.info</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://radio.ltg.network/public/radyongsira/playlist.m3u"
+                  target="_blank"
+                  rel="noopener"
+                  >M3U</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://radio.ltg.network/public/radyongsira/playlist.pls"
+                  rel="noopener"
+                  >PLS</a
+                >
+              </li>
             </ul>
-            <button class="rs-toggle" aria-expanded="false" aria-controls="rs-menu" aria-label="Open menu">
+            <button
+              class="rs-toggle"
+              aria-expanded="false"
+              aria-controls="rs-menu"
+              aria-label="Open menu"
+            >
               <span class="rs-bars" aria-hidden="true"></span>
             </button>
           </div>
 
           <style>
-            .rs-nav { font-family: var(--font-secondary, Roboto, Arial, sans-serif); position:fixed; top:0; left:0; right:0; z-index:1100; background:var(--bg-black,#000); width:100%; box-sizing:border-box; }
-            .rs-nav-inner { max-width:100%; width:100%; display:flex; align-items:center; padding:.75rem 1rem; gap:0; justify-content:center; position:relative; box-sizing:border-box; }
-            .rs-brand { color: var(--color-title,#fff); font-weight:700; text-decoration:none; display:none; margin-right:auto; }
-            .rs-toggle { background:transparent; border:0; color:var(--color-title,#fff); display:none; cursor:pointer; z-index:2001; pointer-events:auto; touch-action:manipulation; -webkit-tap-highlight-color:transparent; width:50px; height:50px; padding:8px; align-items:center; justify-content:center; position:relative; margin-left:auto; box-sizing:border-box; flex-shrink:0; }
-            .rs-bars { display:inline-block; width:24px; height:2px; background:currentColor; position:relative; pointer-events:none; }
-            .rs-bars::before, .rs-bars::after { content:""; position:absolute; left:0; width:100%; height:2px; background:currentColor }
-            .rs-bars::before { top:-8px } .rs-bars::after { top:8px }
+            .rs-nav {
+              font-family: var(--font-secondary, Roboto, Arial, sans-serif);
+              position: fixed;
+              top: 0;
+              left: 0;
+              right: 0;
+              z-index: 1100;
+              background: var(--bg-black, #000);
+              width: 100%;
+              box-sizing: border-box;
+            }
+            .rs-nav-inner {
+              max-width: 100%;
+              width: 100%;
+              display: flex;
+              align-items: center;
+              padding: 0.75rem 1rem;
+              gap: 0;
+              justify-content: center;
+              position: relative;
+              box-sizing: border-box;
+            }
+            .rs-brand {
+              color: var(--color-title, #fff);
+              font-weight: 700;
+              text-decoration: none;
+              display: none;
+              margin-right: auto;
+            }
+            .rs-toggle {
+              background: transparent;
+              border: 0;
+              color: var(--color-title, #fff);
+              display: none;
+              cursor: pointer;
+              z-index: 2001;
+              pointer-events: auto;
+              touch-action: manipulation;
+              -webkit-tap-highlight-color: transparent;
+              width: 50px;
+              height: 50px;
+              padding: 8px;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              margin-left: auto;
+              box-sizing: border-box;
+              flex-shrink: 0;
+            }
+            .rs-bars {
+              display: inline-block;
+              width: 24px;
+              height: 2px;
+              background: currentColor;
+              position: relative;
+              pointer-events: none;
+            }
+            .rs-bars::before,
+            .rs-bars::after {
+              content: "";
+              position: absolute;
+              left: 0;
+              width: 100%;
+              height: 2px;
+              background: currentColor;
+            }
+            .rs-bars::before {
+              top: -8px;
+            }
+            .rs-bars::after {
+              top: 8px;
+            }
 
-            .rs-menu { list-style:none; margin:0; padding:0; display:flex; gap:1rem; align-items:center; flex-wrap:nowrap; }
-            .rs-menu li { display:flex; align-items:center; }
-            .rs-menu a { color:var(--color-text,#c4c4c4); text-decoration:none; padding:.5rem .6rem; display:block; font-weight:600; }
-            .rs-menu a:hover, .rs-menu a:focus { color:var(--color-title,#fff); }
+            .rs-menu {
+              list-style: none;
+              margin: 0;
+              padding: 0;
+              display: flex;
+              gap: 1rem;
+              align-items: center;
+              flex-wrap: nowrap;
+            }
+            .rs-menu li {
+              display: flex;
+              align-items: center;
+            }
+            .rs-menu a {
+              color: var(--color-text, #c4c4c4);
+              text-decoration: none;
+              padding: 0.5rem 0.6rem;
+              display: block;
+              font-weight: 600;
+            }
+            .rs-menu a:hover,
+            .rs-menu a:focus {
+              color: var(--color-title, #fff);
+            }
 
             /* Mobile: hide menu, show toggle */
             @media (max-width: 900px) {
-              #header { padding-top: 60px; }
-              .rs-nav { padding-top:0; }
-              .rs-nav-inner { padding:0.65rem 1rem; justify-content:space-between; align-items:center; }
-              .rs-brand { display:none !important; }
-              .rs-toggle { display:flex; margin-right:auto; }
-              .rs-toggle:active { background-color:rgba(255,255,255,0.15); }
-              .rs-menu { position:fixed; right:0; top:60px; height:calc(100vh - 60px); width:100%; max-width:280px; background:var(--bg-black,#000); flex-direction:column; padding:1rem 0; margin:0; gap:0; transform:translateX(100%); transition:transform .3s ease-in-out; z-index:2000; overflow-y:auto; border-left:1px solid rgba(255,255,255,0.1); }
-              .rs-menu li { display:block; padding:0; margin:0; }
-              .rs-menu a { padding:1rem 1.5rem; display:block; border-bottom:1px solid rgba(255,255,255,0.05); color:var(--color-text,#c4c4c4); font-size:.95rem; transition:background-color .2s; }
-              .rs-menu a:hover { background-color:rgba(255,255,255,0.08); }
-              .rs-menu.open { transform:translateX(0); }
-              body.rs-menu-open { overflow:hidden; }
+              #header {
+                padding-top: 60px;
+              }
+              .rs-nav {
+                padding-top: 0;
+              }
+              .rs-nav-inner {
+                padding: 0.65rem 1rem;
+                justify-content: space-between;
+                align-items: center;
+              }
+              .rs-brand {
+                display: none !important;
+              }
+              .rs-toggle {
+                display: flex;
+                margin-right: auto;
+              }
+              .rs-toggle:active {
+                background-color: rgba(255, 255, 255, 0.15);
+              }
+              .rs-menu {
+                position: fixed;
+                right: 0;
+                top: 60px;
+                height: calc(100vh - 60px);
+                width: 100%;
+                max-width: 280px;
+                background: var(--bg-black, #000);
+                flex-direction: column;
+                padding: 1rem 0;
+                margin: 0;
+                gap: 0;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+                z-index: 2000;
+                overflow-y: auto;
+                border-left: 1px solid rgba(255, 255, 255, 0.1);
+              }
+              .rs-menu li {
+                display: block;
+                padding: 0;
+                margin: 0;
+              }
+              .rs-menu a {
+                padding: 1rem 1.5rem;
+                display: block;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                color: var(--color-text, #c4c4c4);
+                font-size: 0.95rem;
+                transition: background-color 0.2s;
+              }
+              .rs-menu a:hover {
+                background-color: rgba(255, 255, 255, 0.08);
+              }
+              .rs-menu.open {
+                transform: translateX(0);
+              }
+              body.rs-menu-open {
+                overflow: hidden;
+              }
             }
 
             /* Desktop: hide toggle and brand, show menu */
             @media (min-width: 901px) {
-              .rs-nav { position:static; }
-              .rs-toggle { display:none !important; }
-              .rs-brand { display:none !important; }
-              .rs-nav-inner { justify-content:center; gap:2rem; }
+              .rs-nav {
+                position: static;
+              }
+              .rs-toggle {
+                display: none !important;
+              }
+              .rs-brand {
+                display: none !important;
+              }
+              .rs-nav-inner {
+                justify-content: center;
+                gap: 2rem;
+              }
             }
           </style>
 
           <script>
-            (function(){
-              const toggle = document.querySelector('.rs-toggle');
-              const menu = document.getElementById('rs-menu');
+            (function () {
+              const toggle = document.querySelector(".rs-toggle");
+              const menu = document.getElementById("rs-menu");
               const body = document.body;
               if (!toggle || !menu) return;
-              
+
               let isOpen = false;
-              
-              function setOpen(open){
+
+              function setOpen(open) {
                 isOpen = open;
-                toggle.setAttribute('aria-expanded', open);
-                if(open) {
-                  menu.classList.add('open');
-                  body.classList.add('rs-menu-open');
+                toggle.setAttribute("aria-expanded", open);
+                if (open) {
+                  menu.classList.add("open");
+                  body.classList.add("rs-menu-open");
                 } else {
-                  menu.classList.remove('open');
-                  body.classList.remove('rs-menu-open');
+                  menu.classList.remove("open");
+                  body.classList.remove("rs-menu-open");
                 }
               }
-              
-              function handleToggleClick(e){
+
+              function handleToggleClick(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 setOpen(!isOpen);
               }
-              
-              function handleEscape(e){
-                if(e.key==='Escape' && isOpen) setOpen(false);
+
+              function handleEscape(e) {
+                if (e.key === "Escape" && isOpen) setOpen(false);
               }
-              
-              function handleMenuClick(e){
-                if(e.target.tagName==='A') setOpen(false);
+
+              function handleMenuClick(e) {
+                if (e.target.tagName === "A") setOpen(false);
               }
-              
-              function handleOutsideClick(e){
-                if(isOpen && !menu.contains(e.target) && !toggle.contains(e.target)) {
+
+              function handleOutsideClick(e) {
+                if (
+                  isOpen &&
+                  !menu.contains(e.target) &&
+                  !toggle.contains(e.target)
+                ) {
                   setOpen(false);
                 }
               }
-              
-              function handleResize(){
-                if(window.innerWidth > 900 && isOpen) setOpen(false);
+
+              function handleResize() {
+                if (window.innerWidth > 900 && isOpen) setOpen(false);
               }
-              
-              toggle.addEventListener('click', handleToggleClick);
-              document.addEventListener('keydown', handleEscape);
-              menu.addEventListener('click', handleMenuClick);
-              document.addEventListener('click', handleOutsideClick);
-              window.addEventListener('resize', handleResize);
-              
-              function cleanup(){
-                toggle.removeEventListener('click', handleToggleClick);
-                document.removeEventListener('keydown', handleEscape);
-                menu.removeEventListener('click', handleMenuClick);
-                document.removeEventListener('click', handleOutsideClick);
-                window.removeEventListener('resize', handleResize);
+
+              toggle.addEventListener("click", handleToggleClick);
+              document.addEventListener("keydown", handleEscape);
+              menu.addEventListener("click", handleMenuClick);
+              document.addEventListener("click", handleOutsideClick);
+              window.addEventListener("resize", handleResize);
+
+              function cleanup() {
+                toggle.removeEventListener("click", handleToggleClick);
+                document.removeEventListener("keydown", handleEscape);
+                menu.removeEventListener("click", handleMenuClick);
+                document.removeEventListener("click", handleOutsideClick);
+                window.removeEventListener("resize", handleResize);
               }
-              
-              window.addEventListener('beforeunload', cleanup, { once: true });
+
+              window.addEventListener("beforeunload", cleanup, { once: true });
             })();
           </script>
         </nav>

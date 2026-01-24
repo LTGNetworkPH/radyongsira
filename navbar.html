@@ -1,87 +1,229 @@
 <nav class="rs-nav bg-black" aria-label="Primary">
-    <div class="rs-nav-inner container">
-        <a class="rs-brand" href="./index.html">Radyong Sira!</a>
-        <button class="rs-toggle" aria-expanded="false" aria-controls="rs-menu" aria-label="Open menu">
-            <span class="rs-bars" aria-hidden="true"></span>
-        </button>
+  <div class="rs-nav-inner container">
+    <a class="rs-brand" href="./index.html">Radyong Sira!</a>
+    <button
+      class="rs-toggle"
+      aria-expanded="false"
+      aria-controls="rs-menu"
+      aria-label="Open menu"
+    >
+      <span class="rs-bars" aria-hidden="true"></span>
+    </button>
 
-        <ul class="rs-menu" id="rs-menu">
-            <li><a href="./index.html">Home</a></li>
-            <li><a href="./charts.html">Charts</a></li>
-            <li><a href="https://radio.ltg.network/public/radyongsira/podcasts" target="_blank" rel="noopener">Podcasts</a></li>
-            <li><a href="./schedule.html">Schedule</a></li>
-            <li><a href="https://www.internet-radio.com/" target="_blank" rel="noopener">Internet Radio</a></li>
-            <li><a href="https://onlineradiobox.com/ph/radyongsira/" target="_blank" rel="noopener">Online Radio Box</a></li>
-            <li><a href="https://www.radio-browser.info/history/9c64fb2a-cf4e-459d-99e7-14fb757219f6" target="_blank" rel="noopener">Radio-Browser.info</a></li>
-            <li><a href="https://radio.ltg.network/public/radyongsira/playlist.m3u" target="_blank" rel="noopener">M3U</a></li>
-            <li><a href="https://radio.ltg.network/public/radyongsira/playlist.pls" rel="noopener">PLS</a></li>
-        </ul>
-    </div>
+    <ul class="rs-menu" id="rs-menu">
+      <li><a href="./index.html">Home</a></li>
+      <li><a href="./charts.html">Charts</a></li>
+      <li>
+        <a
+          href="https://radio.ltg.network/public/radyongsira/podcasts"
+          target="_blank"
+          rel="noopener"
+          >Podcasts</a
+        >
+      </li>
+      <li><a href="./schedule.html">Schedule</a></li>
+      <li>
+        <a href="https://www.internet-radio.com/" target="_blank" rel="noopener"
+          >Internet Radio</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://onlineradiobox.com/ph/radyongsira/"
+          target="_blank"
+          rel="noopener"
+          >Online Radio Box</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://www.radio-browser.info/history/6c847f86-4c4e-4924-ae36-50ce9b719ebc"
+          target="_blank"
+          rel="noopener"
+          >Radio-Browser.info</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://radio.ltg.network/public/radyongsira/playlist.m3u"
+          target="_blank"
+          rel="noopener"
+          >M3U</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://radio.ltg.network/public/radyongsira/playlist.pls"
+          rel="noopener"
+          >PLS</a
+        >
+      </li>
+    </ul>
+  </div>
 
-    <style>
-        .rs-nav { font-family: var(--font-secondary, Roboto, Arial, sans-serif); }
-        .rs-nav .container { max-width: 1100px; margin: 0 auto; display:flex; align-items:center; padding:.5rem 1rem; gap:1rem; }
-        .rs-brand { color: var(--color-title,#fff); font-weight:700; text-decoration:none; margin-right:auto; }
-        .rs-toggle { background:transparent; border:0; color:var(--color-title,#fff); width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer }
-        .rs-bars { display:inline-block; width:20px; height:2px; background:currentColor; position:relative }
-        .rs-bars::before, .rs-bars::after { content:""; position:absolute; left:0; width:100%; height:2px; background:currentColor }
-        .rs-bars::before { top:-6px } .rs-bars::after { top:6px }
+  <style>
+    .rs-nav {
+      font-family: var(--font-secondary, Roboto, Arial, sans-serif);
+    }
+    .rs-nav .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      gap: 1rem;
+    }
+    .rs-brand {
+      color: var(--color-title, #fff);
+      font-weight: 700;
+      text-decoration: none;
+      margin-right: auto;
+    }
+    .rs-toggle {
+      background: transparent;
+      border: 0;
+      color: var(--color-title, #fff);
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .rs-bars {
+      display: inline-block;
+      width: 20px;
+      height: 2px;
+      background: currentColor;
+      position: relative;
+    }
+    .rs-bars::before,
+    .rs-bars::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: currentColor;
+    }
+    .rs-bars::before {
+      top: -6px;
+    }
+    .rs-bars::after {
+      top: 6px;
+    }
 
-        .rs-menu { list-style:none; margin:0; padding:0; display:flex; gap:1rem; align-items:center }
-        .rs-menu a { color:var(--color-text,#c4c4c4); text-decoration:none; padding:.5rem .6rem; display:block; font-weight:600 }
-        .rs-menu a:hover, .rs-menu a:focus { color:var(--color-title,#fff); }
+    .rs-menu {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    .rs-menu a {
+      color: var(--color-text, #c4c4c4);
+      text-decoration: none;
+      padding: 0.5rem 0.6rem;
+      display: block;
+      font-weight: 600;
+    }
+    .rs-menu a:hover,
+    .rs-menu a:focus {
+      color: var(--color-title, #fff);
+    }
 
-        /* Mobile: hide menu, show toggle */
-        @media (max-width: 900px) {
-            .rs-menu { position:fixed; right:0; top:0; height:100%; width:280px; background:var(--bg-black,#000); flex-direction:column; padding:3.5rem 1rem; transform:translateX(100%); transition:transform .28s ease-in-out; box-shadow: -10px 0 30px rgba(0,0,0,.4); z-index:1200 }
-            .rs-menu.open { transform:translateX(0); }
-            .rs-toggle { display:inline-flex }
-            .rs-brand { margin-right:0 }
-        }
+    /* Mobile: hide menu, show toggle */
+    @media (max-width: 900px) {
+      .rs-menu {
+        position: fixed;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 280px;
+        background: var(--bg-black, #000);
+        flex-direction: column;
+        padding: 3.5rem 1rem;
+        transform: translateX(100%);
+        transition: transform 0.28s ease-in-out;
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.4);
+        z-index: 1200;
+      }
+      .rs-menu.open {
+        transform: translateX(0);
+      }
+      .rs-toggle {
+        display: inline-flex;
+      }
+      .rs-brand {
+        margin-right: 0;
+      }
+    }
 
-        /* Desktop: hide toggle */
-        @media (min-width: 901px) {
-            .rs-toggle { display:none }
-        }
-    </style>
+    /* Desktop: hide toggle */
+    @media (min-width: 901px) {
+      .rs-toggle {
+        display: none;
+      }
+    }
+  </style>
 
-    <script>
-        (function(){
-            const toggle = document.currentScript && document.currentScript.previousElementSibling ? document.currentScript.previousElementSibling.querySelector('.rs-toggle') : document.querySelector('.rs-toggle');
-            const menu = document.getElementById('rs-menu');
-            if (!toggle || !menu) return;
-            
-            function setOpen(open){
-                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-                menu.classList.toggle('open', !!open);
-            }
-            
-            // Handler functions for cleanup
-            const handleToggleClick = ()=> setOpen(menu.classList.toggle('open'));
-            const handleEscape = (e)=>{ if(e.key==='Escape' && menu.classList.contains('open')) setOpen(false); };
-            const handleMenuClick = (e)=>{ if(e.target.tagName==='A') setOpen(false); };
-            const handleOutsideClick = (e)=>{ if(menu.classList.contains('open') && !menu.contains(e.target) && !toggle.contains(e.target)) setOpen(false); };
-            const handleResize = ()=>{ if(window.innerWidth>900) setOpen(false); };
-            
-            // Attach listeners
-            toggle.addEventListener('click', handleToggleClick);
-            document.addEventListener('keydown', handleEscape);
-            menu.addEventListener('click', handleMenuClick);
-            document.addEventListener('click', handleOutsideClick);
-            window.addEventListener('resize', handleResize);
-            
-            // Cleanup function for page unload/navigation
-            function cleanup(){
-                toggle.removeEventListener('click', handleToggleClick);
-                document.removeEventListener('keydown', handleEscape);
-                menu.removeEventListener('click', handleMenuClick);
-                document.removeEventListener('click', handleOutsideClick);
-                window.removeEventListener('resize', handleResize);
-            }
-            
-            // Add cleanup handlers
-            window.addEventListener('beforeunload', cleanup, { once: true });
-            window.addEventListener('unload', cleanup, { once: true });
-        })();
-    </script>
+  <script>
+    (function () {
+      const toggle =
+        document.currentScript && document.currentScript.previousElementSibling
+          ? document.currentScript.previousElementSibling.querySelector(
+              ".rs-toggle",
+            )
+          : document.querySelector(".rs-toggle");
+      const menu = document.getElementById("rs-menu");
+      if (!toggle || !menu) return;
+
+      function setOpen(open) {
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        menu.classList.toggle("open", !!open);
+      }
+
+      // Handler functions for cleanup
+      const handleToggleClick = () => setOpen(menu.classList.toggle("open"));
+      const handleEscape = (e) => {
+        if (e.key === "Escape" && menu.classList.contains("open"))
+          setOpen(false);
+      };
+      const handleMenuClick = (e) => {
+        if (e.target.tagName === "A") setOpen(false);
+      };
+      const handleOutsideClick = (e) => {
+        if (
+          menu.classList.contains("open") &&
+          !menu.contains(e.target) &&
+          !toggle.contains(e.target)
+        )
+          setOpen(false);
+      };
+      const handleResize = () => {
+        if (window.innerWidth > 900) setOpen(false);
+      };
+
+      // Attach listeners
+      toggle.addEventListener("click", handleToggleClick);
+      document.addEventListener("keydown", handleEscape);
+      menu.addEventListener("click", handleMenuClick);
+      document.addEventListener("click", handleOutsideClick);
+      window.addEventListener("resize", handleResize);
+
+      // Cleanup function for page unload/navigation
+      function cleanup() {
+        toggle.removeEventListener("click", handleToggleClick);
+        document.removeEventListener("keydown", handleEscape);
+        menu.removeEventListener("click", handleMenuClick);
+        document.removeEventListener("click", handleOutsideClick);
+        window.removeEventListener("resize", handleResize);
+      }
+
+      // Add cleanup handlers
+      window.addEventListener("beforeunload", cleanup, { once: true });
+      window.addEventListener("unload", cleanup, { once: true });
+    })();
+  </script>
 </nav>
