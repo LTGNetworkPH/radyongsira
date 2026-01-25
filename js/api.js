@@ -16,16 +16,42 @@ function setAccentColor(element, originalImg) {
             // Try to extract dominant color from image
             const color = colorThief.getColor(originalImg);
             const rgbColor = `rgb(${color})`;
+            
+            // Calculate luminance to determine if color is light or dark
+            const r = color[0];
+            const g = color[1];
+            const b = color[2];
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            
+            // Determine text color based on luminance (light/dark background)
+            const textColor = luminance > 0.5 ? '#000000' : '#FFFFFF';
+            
+            // Set the accent color
             element.style.setProperty("--accent", rgbColor);
-            // Also set on .player element if it exists to ensure button gets the color
             if (player) player.style.setProperty("--accent", rgbColor);
-            // Also set directly on the toggle button
+            
+            // Set play button styling based on background brightness
             const toggleBtn = $(".player-toggle");
             if (toggleBtn) {
                 toggleBtn.style.setProperty("--accent", rgbColor, "important");
                 toggleBtn.style.backgroundColor = rgbColor;
+                toggleBtn.style.color = textColor;
+                
+                // Also update the icon color if present
+                const icon = $("i", toggleBtn);
+                if (icon) {
+                    icon.style.color = textColor;
+                }
             }
-            console.log('Accent color set:', rgbColor, 'Element:', element, 'Player:', player, 'Button:', toggleBtn);
+            
+            // Update the play button text/icon color for all instances
+            document.querySelectorAll(".player-toggle").forEach(btn => {
+                btn.style.color = textColor;
+                const icon = $("i", btn);
+                if (icon) icon.style.color = textColor;
+            });
+            
+            console.log('Accent color set:', rgbColor, 'Text color:', textColor, 'Luminance:', luminance);
         } catch (err) {
             // Color extraction failed - likely due to CORS
             console.warn('Color extraction failed:', err.message);
