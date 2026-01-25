@@ -267,7 +267,9 @@ function playerInit() {
                         colorImg.src = data.now_playing.song.art;
                     }, { once: true });
                     tmp.addEventListener('error', () => {
-                        // keep existing poster on error - expected if image is unavailable
+                        // use placeholder gradient on error
+                        poster.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                        poster.style.backgroundSize = 'cover';
                     }, { once: true });
                     tmp.src = newPosterUrl;
                 }
