@@ -264,6 +264,10 @@ function playerInit() {
                         colorImg.addEventListener('load', () => {
                             setAccentColor(document.body, colorImg);
                         }, { once: true });
+                        colorImg.addEventListener('error', () => {
+                            // fallback to default accent if color extraction fails
+                            document.body.style.setProperty('--accent', '#5c68ad');
+                        }, { once: true });
                         colorImg.src = data.now_playing.song.art;
                     }, { once: true });
                     tmp.addEventListener('error', () => {
