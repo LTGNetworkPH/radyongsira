@@ -127,8 +127,7 @@ const controlVolume = $(".player-volume-toggle-btn");
 
 if (audioPlayer && audioPlayer.dataset.src) {
     const audio = new Audio(audioPlayer.dataset.src);
-    // Optimize for internet radio: metadata preload, CORS, byte-range seeking
-    audio.crossOrigin = 'anonymous';
+    // Optimize for internet radio: metadata preload, byte-range seeking
     audio.preload = 'metadata';
 
     if (verticalVolume && controlVolume) {
