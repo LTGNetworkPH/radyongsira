@@ -305,27 +305,25 @@ function playerInit() {
 
             const statusTextElem = $$("radio-status-text");
             const liveBroadcasterElem = $$("live-broadcaster");
-            const nextSongContainer = nextElem ? nextElem.closest('.song-next') : null;
+            const nextSongDisplay = $$("next-song-display");
 
             if (data.live.is_live) {
                 if (statusTextElem) statusTextElem.innerHTML = "LIVE: " + data.live.streamer_name;
-                // Hide next song tab when live
-                if (nextSongContainer) nextSongContainer.style.display = "none";
+                // Hide next song display when live
+                if (nextSongDisplay) nextSongDisplay.style.visibility = "hidden";
                 if (liveBroadcasterElem) {
-                    const target = proxiedUrl(data.live.art);
-                    if (liveBroadcasterElem.dataset._lastSrc !== target) {
-                        liveBroadcasterElem.dataset._lastSrc = target;
-                        const tmp = new Image();
-                        tmp.crossOrigin = 'Anonymous';
-                        tmp.addEventListener('load', () => { liveBroadcasterElem.src = target; }, { once: true });
-                        tmp.addEventListener('error', () => { /* Preload failed, will keep existing image */ }, { once: true });
-                        tmp.src = target;
-                    }
+                    const target = proxiedUrl(data.live.art) + '?t=' + Date.now();
+                    liveBroadcasterElem.dataset._lastSrc = target;
+                    const tmp = new Image();
+                    tmp.crossOrigin = 'Anonymous';
+                    tmp.addEventListener('load', () => { liveBroadcasterElem.src = target; }, { once: true });
+                    tmp.addEventListener('error', () => { /* Preload failed, will keep existing image */ }, { once: true });
+                    tmp.src = target;
                 }
             } else {
                 if (statusTextElem) statusTextElem.innerHTML = "all djs are offline at the moment, on autodj mode";
-                // Show next song tab when not live
-                if (nextSongContainer) nextSongContainer.style.display = "";
+                // Show next song display when not live
+                if (nextSongDisplay) nextSongDisplay.style.visibility = "visible";
                 if (nextElem) setPlayerMeta(nextElem, data.playing_next.song);
                 if (liveBroadcasterElem) {
                     const fallback = proxiedUrl('https://i.imgur.com/Dtanzpr.png');
