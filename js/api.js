@@ -325,7 +325,7 @@ function playerInit() {
                 if (nextSongDisplay) nextSongDisplay.style.visibility = "visible";
                 if (nextElem) setPlayerMeta(nextElem, data.playing_next.song);
                 if (liveBroadcasterElem) {
-                    const fallback = proxiedUrl('https://picsum.photos/400/300') + '?t=' + Date.now();
+                    const fallback = proxiedUrl('https://radyongsira.ltg.network/img/derp.png') + '?t=' + Date.now();
                     liveBroadcasterElem.dataset._lastSrc = fallback;
                     const tmp = new Image();
                     tmp.crossOrigin = 'Anonymous';
