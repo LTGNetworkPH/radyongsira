@@ -326,15 +326,13 @@ function playerInit() {
                 if (nextSongDisplay) nextSongDisplay.style.visibility = "visible";
                 if (nextElem) setPlayerMeta(nextElem, data.playing_next.song);
                 if (liveBroadcasterElem) {
-                    const fallback = proxiedUrl('https://i.imgur.com/Dtanzpr.png');
-                    if (liveBroadcasterElem.dataset._lastSrc !== fallback) {
-                        liveBroadcasterElem.dataset._lastSrc = fallback;
-                        const tmp = new Image();
-                        tmp.crossOrigin = 'Anonymous';
-                        tmp.addEventListener('load', () => { liveBroadcasterElem.src = fallback; }, { once: true });
-                        tmp.addEventListener('error', () => { /* Fallback preload failed, will use existing image */ }, { once: true });
-                        tmp.src = fallback;
-                    }
+                    const fallback = proxiedUrl('https://i.imgur.com/Dtanzpr.png') + '?t=' + Date.now();
+                    liveBroadcasterElem.dataset._lastSrc = fallback;
+                    const tmp = new Image();
+                    tmp.crossOrigin = 'Anonymous';
+                    tmp.addEventListener('load', () => { liveBroadcasterElem.src = fallback; }, { once: true });
+                    tmp.addEventListener('error', () => { /* Fallback preload failed, will use existing image */ }, { once: true });
+                    tmp.src = fallback;
                 }
             }
 
