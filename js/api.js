@@ -224,7 +224,7 @@ if (audioPlayer && audioPlayer.dataset.src) {
     audio.addEventListener('play', handleAudioPlay, { once: true });
 }
 
-const boxplay = "https://radio.ltg.network/api/nowplaying_static/radyongsira.json";
+const boxplay = "https://a7.asurahosting.com:9110/api/nowplaying_static/radyongsira.json";
 let playerInitRetries = 0;
 const maxRetries = 3;
 const baseRetryDelay = 500; // 500ms for real-time feel
